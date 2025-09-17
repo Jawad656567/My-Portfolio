@@ -50,26 +50,27 @@ function AboutModel() {
 const experiences = [
   {
     role: "Frontend Developer",
-    company: "Company XYZ",
-    period: "2023 - Present",
+    company: "Tech Creator",
+    period: "2025 - Present",
     desc: "Built responsive web applications with React, TailwindCSS, and optimized user experiences.",
     color: "from-purple-500 to-pink-500",
   },
   {
     role: "MERN Stack Developer",
     company: "Freelance",
-    period: "2022 - 2023",
+    period: "2024 - 2025",
     desc: "Developed full-stack projects with MongoDB, Express, React, and Node.js ensuring scalability and performance.",
     color: "from-blue-500 to-cyan-400",
   },
   {
     role: "Intern Web Developer",
-    company: "ABC Tech",
-    period: "2021 - 2022",
+    company: "Tech Creator",
+    period: "2024 - 2025",
     desc: "Worked on small projects, learned team collaboration, and contributed to real-world applications.",
     color: "from-green-500 to-emerald-400",
   },
 ];
+
 /* NEW: ExperienceSection component */
 function ExperienceSection() {
   return (
