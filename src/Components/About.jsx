@@ -72,8 +72,10 @@ const experiences = [
   },
 ];
 
-/* NEW: ExperienceSection component */
-function ExperienceSection() {
+/* NEW: ExperienceSection component (mobile-friendly animations) */
+function ExperienceSection({ isMobile }) {
+  const baseDuration = isMobile ? 0.5 : 0.8;
+
   return (
     <section
       id="experience"
@@ -83,7 +85,7 @@ function ExperienceSection() {
         className="text-3xl md:text-5xl font-extrabold text-center mb-16 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
         initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: isMobile ? 0.5 : 1 }}
         viewport={{ once: true }}
       >
         My Journey 🚀
@@ -102,7 +104,7 @@ function ExperienceSection() {
               }`}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
+              transition={{ duration: baseDuration, delay: index * (isMobile ? 0.1 : 0.2) }}
               viewport={{ once: true, amount: 0.2 }}
             >
               {/* Dot with icon (only on large screens) */}
@@ -119,8 +121,8 @@ function ExperienceSection() {
               {/* Content Card */}
               <motion.div
                 className="bg-slate-900 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700 hover:border-purple-400 transition relative z-10"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ scale: isMobile ? 1.02 : 1.05 }}
+                transition={{ duration: 0.25 }}
               >
                 <h3 className="text-xl sm:text-2xl font-bold text-purple-300">{exp.role}</h3>
                 <p className="text-gray-400 text-sm sm:text-base">
@@ -133,14 +135,14 @@ function ExperienceSection() {
         </div>
       </div>
 
-      {/* Background floating elements */}
+      {/* Background floating elements (disabled on mobile) */}
       <motion.div
-        className="absolute top-10 left-6 sm:left-10 w-20 sm:w-32 h-20 sm:h-32 bg-purple-600/20 rounded-full blur-3xl"
+        className="hidden md:block absolute top-10 left-6 sm:left-10 w-20 sm:w-32 h-20 sm:h-32 bg-purple-600/20 rounded-full blur-3xl"
         animate={{ y: [0, 30, 0] }}
         transition={{ duration: 6, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-16 right-6 sm:right-20 w-28 sm:w-40 h-28 sm:h-40 bg-pink-600/20 rounded-full blur-3xl"
+        className="hidden md:block absolute bottom-16 right-6 sm:right-20 w-28 sm:w-40 h-28 sm:h-40 bg-pink-600/20 rounded-full blur-3xl"
         animate={{ y: [0, -40, 0] }}
         transition={{ duration: 7, repeat: Infinity }}
       />
@@ -148,7 +150,7 @@ function ExperienceSection() {
   );
 }
 
-/* Skills data and components (unchanged) */
+/* Skills data and components */
 const skillsData = [
   {
     category: "Frontend",
@@ -173,12 +175,12 @@ const skillsData = [
   },
 ];
 
-// Individual Skill Bar Component with enhanced animations
-const SkillBar = ({ skill, index }) => (
+// Individual Skill Bar Component with mobile-friendly tweak
+const SkillBar = ({ skill, index, isMobile }) => (
   <motion.div
-    initial={{ opacity: 0, x: -50 }}
+    initial={{ opacity: 0, x: -40 }}
     whileInView={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.8, delay: index * 0.15 }}
+    transition={{ duration: isMobile ? 0.4 : 0.8, delay: index * (isMobile ? 0.1 : 0.15) }}
     className="group"
   >
     <div className="flex justify-between items-center mb-3">
@@ -189,17 +191,18 @@ const SkillBar = ({ skill, index }) => (
         <span className="text-sm text-gray-400 group-hover:text-indigo-400 transition-colors duration-300">
           {skill.level}%
         </span>
-        <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
+        <div className="w-2 h-2 rounded-full bg-indigo-500 md:animate-pulse"></div>
       </div>
     </div>
     <div className="relative h-4 bg-gray-800/50 rounded-full overflow-hidden border border-gray-700/50">
       <motion.div
         initial={{ width: 0 }}
         whileInView={{ width: `${skill.level}%` }}
-        transition={{ duration: 2, delay: index * 0.2, ease: "easeOut" }}
+        transition={{ duration: isMobile ? 1 : 2, delay: index * (isMobile ? 0.1 : 0.2), ease: "easeOut" }}
         className={`h-full bg-gradient-to-r ${skill.color} rounded-full relative overflow-hidden`}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-shimmer"></div>
+        {/* shimmer disabled on mobile */}
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-shimmer"></div>
         <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </motion.div>
       <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-1 h-1 bg-white/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -207,17 +210,17 @@ const SkillBar = ({ skill, index }) => (
   </motion.div>
 );
 
-// Skills Category Component with enhanced styling
-const SkillsCategory = ({ category, skills, index }) => (
+// Skills Category Component with mobile-friendly tweak
+const SkillsCategory = ({ category, skills, index, isMobile }) => (
   <motion.div
-    initial={{ opacity: 0, y: 80 }}
+    initial={{ opacity: 0, y: 60 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, delay: index * 0.3 }}
+    transition={{ duration: isMobile ? 0.5 : 1, delay: index * (isMobile ? 0.15 : 0.3) }}
     className="relative group"
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:blur-xl transition-all duration-700 opacity-0 group-hover:opacity-100"></div>
+    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:blur-xl transition-all duration-700 opacity-0 group-hover:opacity-100 hidden md:block"></div>
     <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-3xl"></div>
-    <div className="relative bg-slate-800/80 backdrop-blur-xl border border-slate-600/30 rounded-3xl p-8 hover:border-indigo-500/60 transition-all duration-700 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20">
+    <div className="relative bg-slate-800/80 md:backdrop-blur-xl border border-slate-600/30 rounded-3xl p-8 hover:border-indigo-500/60 transition-all duration-700 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20">
       <div className="absolute top-0 left-8 transform -translate-y-1/2">
         <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-teal-500 text-white px-6 py-3 rounded-2xl text-lg font-bold shadow-2xl border border-white/20">
           <span className="relative z-10">{category}</span>
@@ -226,10 +229,11 @@ const SkillsCategory = ({ category, skills, index }) => (
       </div>
       <div className="mt-6 space-y-6">
         {skills.map((skill, skillIndex) => (
-          <SkillBar key={skill.name} skill={skill} index={skillIndex} />
+          <SkillBar key={skill.name} skill={skill} index={skillIndex} isMobile={isMobile} />
         ))}
       </div>
-      <div className="absolute bottom-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+      {/* spinner hidden on mobile */}
+      <div className="absolute bottom-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-500 hidden md:block">
         <div className="w-8 h-8 border-2 border-indigo-400 rounded-full animate-spin"></div>
       </div>
     </div>
@@ -255,10 +259,19 @@ export default function About() {
     };
   }, []);
 
+  // Profile image motion variants: simpler on mobile
+  const profileAnimate = isMobile
+    ? { opacity: 1, scale: 1 }
+    : { y: [0, -15, 0], rotate: [0, 5, -5, 0] };
+
+  const profileTransition = isMobile
+    ? { duration: 0.8, ease: "easeOut" }
+    : { duration: 6, repeat: Infinity, ease: "easeInOut" };
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
+      {/* Animated Background Elements (disabled on mobile) */}
+      <div className="absolute inset-0 hidden md:block">
         <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-teal-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
@@ -273,20 +286,13 @@ export default function About() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-500 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-500 rounded-full md:blur-2xl opacity-30 md:animate-pulse"></div>
           <motion.img
             src={Image}
             alt="Jawad Ali"
             className="relative w-44 h-44 md:w-52 md:h-52 rounded-full border-4 border-white/20 shadow-2xl object-cover ring-8 ring-indigo-400/20 hover:ring-indigo-400/40 transition-all duration-500"
-            animate={{
-              y: [0, -15, 0],
-              rotate: [0, 5, -5, 0],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={profileAnimate}
+            transition={profileTransition}
             whileHover={{ scale: 1.05, rotate: 0 }}
           />
           <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-xl">
@@ -300,13 +306,13 @@ export default function About() {
             className="lg:w-1/2 text-center lg:text-left"
             initial={{ opacity: 0, x: -100 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: isMobile ? 0.6 : 1, ease: "easeOut" }}
           >
             <motion.h2
               className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight"
               initial={{ scale: 0.5, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
+              transition={{ duration: isMobile ? 0.6 : 1, delay: 0.2 }}
             >
               <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-teal-400 bg-clip-text text-transparent">
                 About
@@ -319,7 +325,7 @@ export default function About() {
               className="space-y-6 text-lg md:text-xl leading-relaxed"
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
+              transition={{ duration: isMobile ? 0.6 : 1, delay: 0.4 }}
             >
               <p className="text-gray-300">
                 Hi! I'm{" "}
@@ -344,7 +350,7 @@ export default function About() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-10"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6 }}
+              transition={{ duration: isMobile ? 0.6 : 1, delay: 0.6 }}
             >
               <button className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                 <span className="relative z-10">Download Resume</span>
@@ -361,14 +367,15 @@ export default function About() {
             className="lg:w-1/2 w-full h-[300px] md:h-[400px] relative"
             initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            transition={{ duration: isMobile ? 0.6 : 1, delay: 0.3 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl md:blur-xl hidden md:block"></div>
             <div
-              className="relative h-full rounded-3xl overflow-hidden border border-white/10 backdrop-blur-sm"
+              className="relative h-full rounded-3xl overflow-hidden border border-white/10 md:backdrop-blur-sm"
               suppressHydrationWarning
             >
               {mounted && !isMobile ? (
+                // Desktop/Tablet: Show 3D Canvas
                 <Canvas shadows camera={{ position: [0, 2, 8], fov: 45 }}>
                   <ambientLight intensity={0.4} />
                   <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
@@ -390,17 +397,15 @@ export default function About() {
                   />
                 </Canvas>
               ) : (
-                // Mobile fallback image (replace 'Image' with your own fallback if you want)
-          <motion.img
-  src="./models/about.png"
-  alt="About section static preview"
-  className="object-cover w-5/6 h-auto mx-auto mt-8"
-  initial={{ opacity: 0.6, scale: 0.98 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.6 }}
-/>
-
-
+                // Mobile: Show fallback image (ensure this path is in /public)
+                <motion.img
+                  src="./models/about.png"
+                  alt="About section static preview"
+                  className="object-cover w-5/6 h-auto mx-auto mt-8"
+                  initial={{ opacity: 0.6, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                />
               )}
             </div>
           </motion.div>
@@ -408,7 +413,7 @@ export default function About() {
       </section>
 
       {/* NEW Experience Section (timeline) */}
-      <ExperienceSection />
+      <ExperienceSection isMobile={isMobile} />
 
       {/* Skills Section */}
       <section className="relative z-10 px-6 md:px-20 py-20">
@@ -417,13 +422,13 @@ export default function About() {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: isMobile ? 0.6 : 1 }}
           >
             <motion.h2
               className="text-5xl md:text-6xl font-black mb-6"
               initial={{ scale: 0.5, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
+              transition={{ duration: isMobile ? 0.6 : 1, delay: 0.2 }}
             >
               <span className="bg-gradient-to-r from-teal-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 My Skills
@@ -433,7 +438,7 @@ export default function About() {
               className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
+              transition={{ duration: isMobile ? 0.6 : 1, delay: 0.4 }}
             >
               A comprehensive overview of my technical expertise and proficiency levels
               across various technologies and tools in the modern web development ecosystem.
@@ -447,6 +452,7 @@ export default function About() {
                 category={category.category}
                 skills={category.skills}
                 index={index}
+                isMobile={isMobile}
               />
             ))}
           </div>
