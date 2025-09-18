@@ -1,9 +1,12 @@
 // src/components/Hero.jsx
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect, lazy } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Stage, Html } from "@react-three/drei";
+import { OrbitControls, Stage, Html } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
+
+// Lazy load the ComputerModel
+const ComputerModel = lazy(() => import("./ComputerModel"));
 
 // Loader Component
 function Loader() {
@@ -14,33 +17,13 @@ function Loader() {
   );
 }
 
-// 3D Computer Model
-function ComputerModel({ scale }) {
-  const { scene } = useGLTF("/models/pc.glb");
-  return (
-    <primitive
-      object={scene}
-      scale={scale}
-      position={[0, -0.3, 0]}
-      rotation={[0, Math.PI / 4, 0]}
-    />
-  );
-}
-
-// Rotating Title
+// Rotating Title Component
 function RotatingTitle() {
-  const titles = [
-    "Frontend Developer",
-    "Web Developer",
-    "MERN Stack Developer",
-    "React Enthusiast",
-  ];
+  const titles = ["Frontend Developer", "Web Developer", "MERN Stack Developer", "React Enthusiast"];
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % titles.length);
-    }, 2500);
+    const interval = setInterval(() => setIndex((prev) => (prev + 1) % titles.length), 2500);
     return () => clearInterval(interval);
   }, []);
 
@@ -74,8 +57,8 @@ export default function Hero() {
     <section
       id="home"
       className="relative min-h-screen flex flex-col md:flex-row items-center justify-center
-        bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden
-        px-6 md:px-20 pt-20 md:pt-0"
+      bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden
+      px-6 md:px-20 pt-20 md:pt-0"
     >
       {/* Left Side - Text */}
       <motion.div
@@ -86,7 +69,7 @@ export default function Hero() {
       >
         <motion.h1
           className="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide
-            bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
+          bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
