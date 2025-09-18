@@ -1,211 +1,328 @@
-// src/components/Hero.jsx
-import React, { Suspense, useState, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Stage, Html, useProgress } from "@react-three/drei";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
 
-// Loader Component
-function Loader() {
-  const { progress } = useProgress();
-  return (
-    <Html center className="text-white text-lg font-mono animate-pulse">
-      {progress.toFixed(0)}% loaded
-    </Html>
-  );
-}
+        
+  // src/components/Hero.jsx
+  import React, { useState, useEffect } from "react";
+  import { motion, AnimatePresence } from "framer-motion";
+  import { FaGithub, FaFacebook, FaLinkedin, FaDownload, FaEnvelope } from "react-icons/fa";
 
-// 3D Computer Model
-function ComputerModel({ scale }) {
-  const { scene } = useGLTF("/models/pc.glb");
-  return (
-    <primitive
-      object={scene}
-      scale={scale}
-      position={[0, -0.3, 0]} // ✅ adjusted so model is not too low
-      rotation={[0, Math.PI / 4, 0]}
-      castShadow
-      receiveShadow
-    />
-  );
-}
-
-// Rotating Title
-function RotatingTitle() {
-  const titles = [
-    "Frontend Developer",
-    "Web Developer",
-    "MERN Stack Developer",
-    "React Enthusiast",
-  ];
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % titles.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="text-lg md:text-xl text-purple-300 max-w-lg mb-6 h-8">
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={titles[index]}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
-          transition={{ duration: 0.6 }}
-          className="inline-block"
-        >
-          {titles[index]}
-        </motion.span>
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// Hero Section
-export default function Hero() {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 768 : false
-  );
-
-  // Resize listener to update isMobile dynamically
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return (
-    <section
-      id="home"
-      className="relative min-h-screen flex flex-col md:flex-row items-center justify-center
-      bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden 
-      px-6 md:px-20 pt-20 md:pt-0"
-    >
-      {/* Left Side - Text */}
-      <motion.div
-        className="md:w-1/2 text-center md:text-left z-10"
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-        <motion.h1
-          className="text-4xl md:text-6xl font-extrabold mb-4 md:mb-4 mt-6 md:mt-0 tracking-wide 
-          bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          Hi, I'm Jawad Ali
-        </motion.h1>
-
-        <RotatingTitle />
-
-        <motion.p
-          className="text-gray-300 max-w-lg mb-8 leading-relaxed"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        >
-          MERN Stack Developer | Crafting clean, responsive, and professional web experiences.
-        </motion.p>
-
-        {/* Buttons */}
-        <motion.div
-          className="flex justify-center md:justify-start gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <motion.a
-            href="#projects"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-purple-600 hover:bg-purple-700 transition-all text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-2xl"
-          >
-            Download CV
-          </motion.a>
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-transparent border border-white hover:bg-white hover:text-black transition-all px-6 py-3 rounded-lg font-semibold"
-          >
-            Contact Me
-          </motion.a>
-        </motion.div>
-
-        {/* Social Icons */}
-        <motion.div
-          className="flex justify-center md:justify-start gap-6 mt-6 text-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3, duration: 0.8 }}
-        >
-          <a
-            href="https://github.com/Jawad656567"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-purple-400 transition-colors"
-          >
-            <FaGithub />
-          </a>
-          <a
-            href="https://www.facebook.com/jawad.ali.543086?mibextid=ZbWKwL"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-500 transition-colors"
-          >
-            <FaFacebook />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/jawad-ali-201640379"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-400 transition-colors"
-          >
-            <FaLinkedin />
-          </a>
-        </motion.div>
-      </motion.div>
-
-      {/* Right Side - 3D Model / Mobile Fallback */}
-      <motion.div
-        className="md:w-1/2 w-full h-[320px] md:h-[600px] mt-6 md:mt-0"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
-      >
-        {isMobile ? (
-          // Mobile fallback image
-          <img
-            src="/models/pc.png"
-            alt="Computer Model"
-            className=" h-auto mx-auto object-contain md:w-full md:h-full"
+  // Floating particles animation
+  const FloatingParticles = ({ isDark }) => {
+    const particles = Array.from({ length: 20 }, (_, i) => i);
+    
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {particles.map((i) => (
+          <motion.div
+            key={i}
+            className={`absolute w-2 h-2 rounded-full ${
+              isDark ? "bg-purple-400/20" : "bg-purple-600/20"
+            }`}
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+            }}
+            animate={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              ease: "linear",
+            }}
           />
-        ) : (
-          // Desktop 3D model
-          <Canvas shadows camera={{ position: [0, 2, 6], fov: 50 }}>
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[5, 10, 7]} intensity={1} castShadow />
-            <Suspense fallback={<Loader />}>
-              <Stage environment="city" intensity={0.6}>
-                <ComputerModel scale={1.6} />
-              </Stage>
-            </Suspense>
-            <OrbitControls
-              enableZoom={false}
-              autoRotate
-              autoRotateSpeed={1.2}
-              maxPolarAngle={Math.PI / 2.2}
-              minPolarAngle={Math.PI / 4.2}
+        ))}
+      </div>
+    );
+  };
+
+  // Rotating Title Component
+  function RotatingTitle({ isDark }) {
+    const titles = [
+      "Frontend Developer",
+      "Web Developer", 
+      "MERN Stack Developer",
+      "React Enthusiast",
+      "UI/UX Designer"
+    ];
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIndex((prev) => (prev + 1) % titles.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }, []);
+
+    return (
+      <div className={`text-xl md:text-2xl font-medium mb-6 h-10 ${isDark ? "text-purple-300" : "text-purple-600"}`}>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={titles[index]}
+            initial={{ opacity: 0, y: 20, rotateX: -90 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, y: -20, rotateX: 90 }}
+            transition={{ 
+              duration: 0.8,
+              type: "spring",
+              stiffness: 100
+            }}
+            className="inline-block"
+          >
+            ✨ {titles[index]}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // Hero Section
+  export default function Hero({ isDark }) {
+    return (
+      <section
+        id="home"
+        className={`relative min-h-screen flex items-center justify-center overflow-hidden transition-all duration-700 ${
+          isDark
+            ? "bg-gradient-to-br from-slate-900 via-purple-950/20 to-black"
+            : "bg-gradient-to-br from-purple-50 via-white to-pink-50"
+        }`}
+      >
+        {/* Animated Background Elements */}
+        <FloatingParticles isDark={isDark} />
+        
+        {/* Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        
+        <div className="container mx-auto px-6 md:px-20 flex flex-col md:flex-row items-center justify-between relative z-10">
+          
+          {/* Left Side - Content */}
+          <motion.div
+            className="md:w-1/2 text-center md:text-left"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+  {/* Main Title */}
+            <motion.h1
+              className={`text-5xl md:text-7xl font-black mb-4 tracking-tight leading-tight ${
+                isDark ? "text-white" : "text-slate-900"
+              }`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4 }}
+            >
+              Hi, I'm
+              <br />
+              <span className="relative inline-block">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-fuchsia-500 to-pink-600">
+                  Jawad Ali
+                </span>
+                <motion.div
+                  className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-pink-500 to-fuchsia-500"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ delay: 1.5, duration: 0.8 }}
+                />
+              </span>
+            </motion.h1>
+
+
+            {/* Rotating Title */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              <RotatingTitle isDark={isDark} />
+            </motion.div>
+
+            {/* Description */}
+            <motion.p
+              className={`text-lg md:text-xl max-w-2xl mb-8 leading-relaxed ${
+                isDark ? "text-gray-300" : "text-gray-700"
+              }`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.8 }}
+            >
+              Passionate <span className="font-semibold text-purple-500">MERN Stack Developer</span> crafting 
+              exceptional digital experiences with clean code, stunning designs, and seamless functionality.
+            </motion.p>
+
+            {/* Action Buttons */}
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 }}
+            >
+              <motion.a
+                href="#projects"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className={`group relative px-8 py-4 rounded-xl font-semibold text-lg shadow-xl overflow-hidden transition-all duration-300 ${
+                  isDark
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/25"
+                    : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-purple-500/25"
+                }`}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <FaDownload />
+                  Download CV
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-pink-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+              </motion.a>
+
+              <motion.a
+                href="#contact"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className={`group px-8 py-4 rounded-xl font-semibold text-lg border-2 transition-all duration-300 ${
+                  isDark
+                    ? "border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
+                    : "border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <FaEnvelope />
+                  Let's Talk
+                </span>
+              </motion.a>
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div
+              className="flex justify-center md:justify-start gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
+            >
+              {[
+                { icon: FaGithub, href: "https://github.com/Jawad656567", color: "hover:text-gray-600" },
+                { icon: FaFacebook, href: "https://www.facebook.com/jawad.ali.543086?mibextid=ZbWKwL", color: "hover:text-blue-500" },
+                { icon: FaLinkedin, href: "https://www.linkedin.com/in/jawad-ali-201640379", color: "hover:text-blue-600" }
+              ].map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.2, y: -3 }}
+                  whileTap={{ scale: 0.9 }}
+                  className={`text-3xl transition-all duration-300 ${
+                    isDark ? "text-gray-400" : "text-gray-600"
+                  } ${social.color} hover:drop-shadow-lg`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.7 + index * 0.1 }}
+                >
+                  <social.icon />
+                </motion.a>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Right Side - 3D Model Image */}
+          <motion.div
+            className="md:w-1/2 flex items-center justify-center mt-12 md:mt-0"
+            initial={{ opacity: 0, scale: 0.8, rotateY: 45 }}
+            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+          >
+            <motion.div
+              className="relative"
+              whileHover={{ scale: 1.05 }}
+              animate={{ 
+                y: [0, -10, 0],
+                rotateY: [0, 5, -5, 0]
+              }}
+              transition={{
+                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                rotateY: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+              }}
+            >
+              {/* Glow effect behind image */}
+              <div className={`absolute inset-0 rounded-3xl blur-3xl scale-110 ${
+                isDark ? "bg-purple-500/20" : "bg-purple-400/30"
+              }`}></div>
+              
+              <img
+                src="/models/pc.png"
+                alt="3D Computer Model"
+                className="relative z-10 w-full max-w-lg h-auto object-contain drop-shadow-2xl"
+              />
+              
+              {/* Animated rings around the image */}
+              <motion.div
+                className={`absolute inset-0 rounded-full border-2 ${
+                  isDark ? "border-purple-500/30" : "border-purple-400/40"
+                }`}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                style={{ 
+                  width: "120%", 
+                  height: "120%", 
+                  top: "-10%", 
+                  left: "-10%" 
+                }}
+              />
+              
+              <motion.div
+                className={`absolute inset-0 rounded-full border-2 ${
+                  isDark ? "border-pink-500/20" : "border-pink-400/30"
+                }`}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                style={{ 
+                  width: "140%", 
+                  height: "140%", 
+                  top: "-20%", 
+                  left: "-20%" 
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 0.8 }}
+        >
+          <motion.div
+            className={`w-6 h-10 border-2 rounded-full flex justify-center ${
+              isDark ? "border-purple-400" : "border-purple-600"
+            }`}
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <motion.div
+              className={`w-1 h-3 rounded-full mt-2 ${
+                isDark ? "bg-purple-400" : "bg-purple-600"
+              }`}
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
             />
-          </Canvas>
-        )}
-      </motion.div>
-    </section>
-  );
-}
+          </motion.div>
+        </motion.div>
+        
+        {/* Custom CSS for wave animation */}
+        <style jsx>{`
+          @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-15deg); }
+          }
+          .animate-wave {
+            display: inline-block;
+            animation: wave 2s ease-in-out infinite;
+          }
+        `}</style>
+      </section>
+    );
+  }
+
+

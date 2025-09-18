@@ -1,224 +1,277 @@
-import React, { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Sun, Moon, Menu, X } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
 import Image from "../images/logooo.png";
 
-export default function Navbar() {
+const NAV_ITEMS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Projects", path: "/projects" },
+  { name: "Contact", path: "/contact" },
+];
+
+export default function Navbar({ isDark, setIsDark }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
+  const toggleTheme = () => setIsDark((d) => !d);
+
+  // Handle scroll effect
   useEffect(() => {
-    // Initial theme setup
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isDarkMode]);
+  }, []);
 
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => {
-      const newMode = !prev;
-      if (newMode) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark") setIsDark(true);
+      else if (saved === "light") setIsDark(false);
+      else {
+        const prefers = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setIsDark(prefers);
       }
-      return newMode;
-    });
-  };
+    } catch {
+      const prefers = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDark(prefers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    {name: "Project", path:"/project"},
-    { name: "Contact", path: "/contact" },
-  ];
+  // Persist theme + update <html> for better native theming
+  useEffect(() => {
+    try {
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    } catch {}
+    document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+  }, [isDark]);
 
-  return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${
-        isScrolled
-          ? "bg-black/95 backdrop-blur-md shadow-lg shadow-red-500/20 py-1"
-          : "bg-gradient-to-r from-black via-gray-950 to-black py-2"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="flex justify-between items-center h-14">
-          {/* Logo */}
-          <div className="flex-shrink-0 group cursor-pointer">
-            <Link to="/" className="flex items-center space-x-3">
-              <div className="relative group">
-                <img
-                  src={Image}
-                  alt="Portfolio Logo"
-                  className="w-19 h-14 object-contain transition-transform duration-300 group-hover:scale-110"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                    e.target.nextSibling.style.display = "flex";
-                  }}
-                />
-                <div className="w-8 h-8 hidden items-center justify-center text-purple-400 text-lg font-bold bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg backdrop-blur-sm">
-                  P
-                </div>
-              </div>
-              <div className="relative">
-                <span className="text-[18px] font-bold text-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text tracking-wide drop-shadow-sm">
-                TechNest
-                </span>
-                <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 group-hover:w-full transition-all duration-700 ease-out"></div>
-              </div>
-            </Link>
+  // Prevent background scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const linkBase = "relative px-4 py-2 transition-all duration-300 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500/50 rounded-lg group overflow-hidden";
+  const linkLight = "text-gray-700 hover:text-yellow-600";
+  const linkDark = "text-gray-200 hover:text-yellow-400";
+
+  const desktopMenu = (
+    <ul className="hidden lg:flex items-center gap-2">
+      {NAV_ITEMS.map((item) => (
+        <li key={item.name}>
+          <NavLink
+            to={item.path}
+            className={({ isActive }) =>
+              `${linkBase} ${isDark ? linkDark : linkLight} ${
+                isActive 
+                  ? (isDark 
+                      ? "text-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/20" 
+                      : "text-yellow-700 bg-yellow-100 shadow-lg shadow-yellow-200/50") 
+                  : "hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
+              }`
+            }
+          >
+            <span className="relative z-10">{item.name}</span>
+            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg ${
+              isDark 
+                ? "bg-gradient-to-r from-yellow-400/5 to-yellow-600/5" 
+                : "bg-gradient-to-r from-yellow-200/30 to-yellow-300/30"
+            }`} />
+          </NavLink>
+        </li>
+      ))}
+
+      <li className="ml-2">
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          title="Toggle theme"
+          className={`relative p-3 rounded-full transition-all duration-500 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500/50 overflow-hidden group ${
+            isDark
+              ? "bg-gradient-to-br from-gray-700 to-gray-800 text-yellow-400 hover:from-gray-600 hover:to-gray-700 shadow-lg shadow-gray-900/20"
+              : "bg-gradient-to-br from-gray-100 to-gray-200 text-yellow-600 hover:from-gray-200 hover:to-gray-300 shadow-lg shadow-gray-200/50"
+          }`}
+        >
+          <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+            isDark 
+              ? "bg-gradient-to-br from-yellow-400/10 to-yellow-600/10" 
+              : "bg-gradient-to-br from-yellow-200/20 to-yellow-300/20"
+          }`} />
+          <div className="relative z-10 transition-transform duration-500 group-hover:rotate-180">
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </div>
+        </button>
+      </li>
+    </ul>
+  );
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex flex-1 items-center justify-end mr-12 space-x-1">
-            {navItems.map((item, index) => (
-              <div key={item.name} className="relative group">
-                <Link
+  const mobileMenu = (
+    <>
+      {/* Backdrop */}
+      <div
+        className={`lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm transition-all duration-300 z-40 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsOpen(false)}
+      />
+      
+      {/* Menu */}
+      <div
+        id="mobile-menu"
+        className={`lg:hidden fixed top-16 left-0 right-0 transition-all duration-500 ease-out z-50 ${
+          isOpen 
+            ? "opacity-100 translate-y-0" 
+            : "opacity-0 -translate-y-full pointer-events-none"
+        } ${
+          isDark 
+            ? "bg-gray-900/95 border-gray-800" 
+            : "bg-white/95 border-gray-200"
+        } backdrop-blur-xl border-b shadow-2xl`}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <ul className="flex flex-col space-y-2">
+            {NAV_ITEMS.map((item, index) => (
+              <li 
+                key={item.name}
+                className={`transform transition-all duration-500 ${
+                  isOpen 
+                    ? "translate-x-0 opacity-100" 
+                    : "translate-x-4 opacity-0"
+                }`}
+                style={{ transitionDelay: `${index * 50}ms` }}
+              >
+                <NavLink
                   to={item.path}
-                  className="relative px-3 py-1.5 text-gray-300 hover:text-white font-medium tracking-wide transition-all duration-300 ease-out transform hover:scale-105 rounded-md"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `block py-4 px-4 rounded-xl transition-all duration-300 font-medium ${
+                      isDark ? linkDark : linkLight
+                    } ${
+                      isActive 
+                        ? (isDark 
+                            ? "text-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/20 border border-yellow-400/20" 
+                            : "text-yellow-700 bg-yellow-100 shadow-lg shadow-yellow-200/50 border border-yellow-200") 
+                        : "hover:bg-gray-100/50 dark:hover:bg-gray-800/50 hover:translate-x-1"
+                    }`
+                  }
                 >
                   {item.name}
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 group-hover:w-full transition-all duration-500 ease-out"></div>
-                  <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 transition-opacity duration-300"></div>
-                </Link>
-              </div>
+                </NavLink>
+              </li>
             ))}
-          </div>
-
-          {/* Desktop Theme Toggle */}
-          <div className="hidden lg:block flex-shrink-0">
-            <button
-              onClick={toggleTheme}
-              className="relative p-2.5 rounded-full bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 border border-purple-500/20 text-gray-300 hover:text-white transition-all duration-300 transform hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30 group"
-            >
-              <div className="relative w-5 h-5">
-                {isDarkMode ? (
-                  <Sun className="w-5 h-5 text-yellow-400 transition-all duration-300 group-hover:rotate-180" />
-                ) : (
-                  <Moon className="w-5 h-5 text-blue-400 transition-all duration-300 group-hover:-rotate-12" />
-                )}
-              </div>
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center space-x-2">
-            {/* Mobile Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="relative p-2 rounded-md bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 border border-purple-500/20 text-gray-300 hover:text-white transition-all duration-300 transform hover:scale-110"
-            >
-              {isDarkMode ? (
-                <Sun className="w-5 h-5 text-yellow-400 transition-all duration-300" />
-              ) : (
-                <Moon className="w-5 h-5 text-blue-400 transition-all duration-300" />
-              )}
-            </button>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="relative p-2 text-gray-300 hover:text-white transition-all duration-300 transform hover:scale-110 rounded-md hover:bg-gray-800/50"
-            >
-              {isOpen ? (
-                <X
-                  size={24}
-                  className="text-red-500 transition-transform duration-200"
-                />
-              ) : (
-                <Menu
-                  size={24}
-                  className="text-purple-400 transition-transform duration-200"
-                />
-              )}
-            </button>
-          </div>
+          </ul>
         </div>
       </div>
+    </>
+  );
 
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden transition-all duration-500 ease-in-out transform ${
-          isOpen
-            ? "max-h-96 opacity-100 translate-y-0"
-            : "max-h-0 opacity-0 -translate-y-4 overflow-hidden"
+  return (
+    <>
+      <nav
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+          scrolled 
+            ? (isDark 
+                ? "bg-gray-900/90 shadow-2xl shadow-gray-900/20" 
+                : "bg-white/90 shadow-2xl shadow-gray-200/20") 
+            : (isDark 
+                ? "bg-gray-900/70" 
+                : "bg-white/70")
+        } backdrop-blur-xl supports-[backdrop-filter]:backdrop-blur-xl border-b ${
+          isDark ? "border-gray-800/50" : "border-gray-200/50"
         }`}
+        role="navigation"
+        aria-label="Primary"
       >
-        <div className="bg-gradient-to-b from-black/98 via-gray-950/98 to-black/98 backdrop-blur-md border-t border-purple-500/20 shadow-xl shadow-black/50">
-          <div className="px-4 py-4 space-y-1">
-            {navItems.map((item, index) => (
-              <div key={item.name} className="group">
-                <Link
-                  to={item.path}
-                  className="block text-gray-300 hover:text-white font-medium py-2.5 px-3 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-600/20 hover:via-pink-500/20 hover:to-red-500/20 transform hover:translate-x-1 border-l-2 border-transparent hover:border-purple-500"
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animation: isOpen
-                      ? "slideInLeft 0.5s ease-out forwards"
-                      : "none",
-                  }}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-base">{item.name}</span>
-                    <div className="w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 group-hover:w-6 transition-all duration-500"></div>
-                  </div>
-                </Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 md:h-18 lg:h-20">
+            {/* Logo */}
+            <Link 
+              to="/" 
+              className="flex items-center gap-3 group transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500/50 rounded-lg px-2 py-1"
+            >
+              <div className="relative">
+                <img 
+                  src={Image} 
+                  alt="TechNest logo" 
+                  className="w-16 h-12 md:w-20 md:h-14 object-contain transition-transform duration-300 group-hover:scale-110" 
+                />
+                <div className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                  isDark 
+                    ? "bg-gradient-to-br from-yellow-400/10 to-yellow-600/10" 
+                    : "bg-gradient-to-br from-yellow-200/20 to-yellow-300/20"
+                }`} />
               </div>
-            ))}
+              <span
+                className={`text-xl md:text-2xl font-bold tracking-tight transition-all duration-300 ${
+                  isDark ? "text-yellow-400" : "text-yellow-600"
+                } group-hover:scale-105`}
+              >
+                TechNest
+              </span>
+            </Link>
 
-            <div className="pt-3 border-t border-gray-800 flex items-center justify-between">
-              {/* Mobile Theme Toggle Text */}
-              <div className="flex items-center space-x-2">
-                <span className="text-gray-300 text-sm font-medium">
-                  Theme:
-                </span>
-                <button
-                  onClick={toggleTheme}
-                  className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-red-500/20 border border-purple-500/30 transition-all duration-300 hover:scale-105"
-                >
-                  {isDarkMode ? (
-                    <>
-                      <Sun className="w-4 h-4 text-yellow-400" />
-                      <span className="text-gray-300 text-sm">Light</span>
-                    </>
-                  ) : (
-                    <>
-                      <Moon className="w-4 h-4 text-blue-400" />
-                      <span className="text-gray-300 text-sm">Dark</span>
-                    </>
-                  )}
-                </button>
-              </div>
+            {/* Desktop Menu */}
+            {desktopMenu}
+
+            {/* Mobile Controls */}
+            <div className="lg:hidden flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                title="Toggle theme"
+                className={`relative p-2.5 rounded-full transition-all duration-500 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500/50 overflow-hidden group ${
+                  isDark
+                    ? "bg-gradient-to-br from-gray-700 to-gray-800 text-yellow-400 hover:from-gray-600 hover:to-gray-700 shadow-lg shadow-gray-900/20"
+                    : "bg-gradient-to-br from-gray-100 to-gray-200 text-yellow-600 hover:from-gray-200 hover:to-gray-300 shadow-lg shadow-gray-200/50"
+                }`}
+              >
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                  isDark 
+                    ? "bg-gradient-to-br from-yellow-400/10 to-yellow-600/10" 
+                    : "bg-gradient-to-br from-yellow-200/20 to-yellow-300/20"
+                }`} />
+                <div className="relative z-10 transition-transform duration-500 group-hover:rotate-180">
+                  {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                </div>
+              </button>
+
+              <button
+                onClick={() => setIsOpen((o) => !o)}
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
+                className={`relative p-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500/50 overflow-hidden group ${
+                  isDark 
+                    ? "text-gray-200 hover:bg-gray-800/80" 
+                    : "text-gray-800 hover:bg-gray-100/80"
+                } ${isOpen ? "scale-110" : "hover:scale-105"}`}
+              >
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                  isDark 
+                    ? "bg-gradient-to-br from-gray-800/50 to-gray-700/50" 
+                    : "bg-gradient-to-br from-gray-100/50 to-gray-200/50"
+                }`} />
+                <div className="relative z-10 transition-transform duration-300">
+                  {isOpen ? <X size={24} /> : <Menu size={24} />}
+                </div>
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Animation Keyframes */}
-      <style jsx>{`
-        @keyframes slideInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
-    </nav>
+      {/* Mobile Menu */}
+      {mobileMenu}
+    </>
   );
 }
