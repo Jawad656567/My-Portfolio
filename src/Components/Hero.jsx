@@ -93,7 +93,7 @@ export default function Hero() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <motion.h1
-          className="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide 
+          className="text-4xl md:text-6xl font-extrabold mb-4 md:mb-4 mt-6 md:mt-0 tracking-wide 
           bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -184,7 +184,7 @@ export default function Hero() {
           <img
             src="/models/pc.png"
             alt="Computer Model"
-            className="w-full h-full object-contain"
+            className="w-3/4 h-auto mx-auto object-contain md:w-full md:h-full"
           />
         ) : (
           // Desktop 3D model
