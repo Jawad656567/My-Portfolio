@@ -1,29 +1,49 @@
 // src/components/Hero.jsx
-import React, { Suspense, useState, useEffect, lazy } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stage, Html } from "@react-three/drei";
+import { OrbitControls, useGLTF, Stage, Html, useProgress } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
 
-// Lazy load the ComputerModel
-const ComputerModel = lazy(() => import("./ComputerModel"));
-
 // Loader Component
 function Loader() {
+  const { progress } = useProgress();
   return (
     <Html center className="text-white text-lg font-mono animate-pulse">
-      Loading...
+      {progress.toFixed(0)}% loaded
     </Html>
   );
 }
 
-// Rotating Title Component
+// 3D Computer Model
+function ComputerModel({ scale }) {
+  const { scene } = useGLTF("/models/pc.glb");
+  return (
+    <primitive
+      object={scene}
+      scale={scale}
+      position={[0, -0.3, 0]} // ✅ adjusted so model is not too low
+      rotation={[0, Math.PI / 4, 0]}
+      castShadow
+      receiveShadow
+    />
+  );
+}
+
+// Rotating Title
 function RotatingTitle() {
-  const titles = ["Frontend Developer", "Web Developer", "MERN Stack Developer", "React Enthusiast"];
+  const titles = [
+    "Frontend Developer",
+    "Web Developer",
+    "MERN Stack Developer",
+    "React Enthusiast",
+  ];
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => setIndex((prev) => (prev + 1) % titles.length), 2500);
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % titles.length);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
@@ -47,17 +67,22 @@ function RotatingTitle() {
 
 // Hero Section
 export default function Hero() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
 
+  // Resize listener to update isMobile dynamically
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex flex-col md:flex-row items-center justify-center
-      bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden
+      bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden 
       px-6 md:px-20 pt-20 md:pt-0"
     >
       {/* Left Side - Text */}
@@ -68,7 +93,7 @@ export default function Hero() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <motion.h1
-          className="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide
+          className="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide 
           bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -147,7 +172,7 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Right Side - 3D Model / Fallback */}
+      {/* Right Side - 3D Model / Mobile Fallback */}
       <motion.div
         className="md:w-1/2 w-full h-[320px] md:h-[600px] mt-6 md:mt-0"
         initial={{ opacity: 0, x: 50 }}
@@ -155,15 +180,17 @@ export default function Hero() {
         transition={{ duration: 1, delay: 0.5 }}
       >
         {isMobile ? (
+          // Mobile fallback image
           <img
-            src="/models/pc-fallback.png"
+            src="/models/pc.png"
             alt="Computer Model"
             className="w-full h-full object-contain"
           />
         ) : (
-          <Canvas shadows dpr={1} camera={{ position: [0, 2, 6], fov: 50 }}>
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[5, 10, 7]} intensity={0.8} />
+          // Desktop 3D model
+          <Canvas shadows camera={{ position: [0, 2, 6], fov: 50 }}>
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[5, 10, 7]} intensity={1} castShadow />
             <Suspense fallback={<Loader />}>
               <Stage environment="city" intensity={0.6}>
                 <ComputerModel scale={1.6} />
@@ -172,7 +199,7 @@ export default function Hero() {
             <OrbitControls
               enableZoom={false}
               autoRotate
-              autoRotateSpeed={1}
+              autoRotateSpeed={1.2}
               maxPolarAngle={Math.PI / 2.2}
               minPolarAngle={Math.PI / 4.2}
             />

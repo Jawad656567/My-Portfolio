@@ -72,7 +72,7 @@ export default function Navbar() {
               </div>
               <div className="relative">
                 <span className="text-lg font-bold text-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text tracking-wide drop-shadow-sm">
-                  Portfolio
+                TechNest
                 </span>
                 <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 group-hover:w-full transition-all duration-700 ease-out"></div>
               </div>
