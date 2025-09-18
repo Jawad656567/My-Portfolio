@@ -4,7 +4,7 @@ import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import About from "./Components/About";
 import Project from "./Components/Project";
-// import Contact from "./Components/contact";
+import Contact from "./Components/contact";
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Hero />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Project />} />
-          {/* <Route path="/contact" element={<Contact />} /> */}
+          <Route path="/contact" element={<Contact />} />
         </Routes>
     </Router>
   );

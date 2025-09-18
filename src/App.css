@@ -1,42 +1,166 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ------------------------
+   Root Variables for Themes
+------------------------- */
+:root {
+  --bg-color: #f9f9f9;
+  --text-color: #111;
+  --primary-color: #4f46e5;   /* Indigo */
+  --secondary-color: #a78bfa; /* Purple */
+  --accent-color: #06b6d4;    /* Teal */
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Dark theme overrides */
+.dark {
+  --bg-color: #0f172a;
+  --text-color: #f1f5f9;
+  --primary-color: #6366f1;
+  --secondary-color: #c084fc;
+  --accent-color: #14b8a6;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(255, 255, 255, 0.2);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ------------------------
+   Global Body & Smooth Transitions
+------------------------- */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Nunito', sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 4px;
+}
+
+/* ------------------------
+   Tailwind Utility Overrides
+------------------------- */
+.bg-custom {
+  background-color: var(--bg-color) !important;
+}
+
+.text-custom {
+  color: var(--text-color) !important;
+}
+
+.border-custom {
+  border-color: var(--border-color) !important;
 }
 
 .card {
-  padding: 2em;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
 }
 
-.read-the-docs {
-  color: #888;
+/* ------------------------
+   Buttons
+------------------------- */
+.btn-primary {
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  color: #fff;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ------------------------
+   Skill Bars
+------------------------- */
+.skill-bar-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 1rem;
+  margin-top: 0.5rem;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-bar-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  transform: skewX(-12deg);
+  animation: shimmer 2s infinite;
+}
+
+/* ------------------------
+   Shimmer Effect
+------------------------- */
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+/* ------------------------
+   Floating Background Elements
+------------------------- */
+.floating-bg {
+  border-radius: 999px;
+  filter: blur(3rem);
+  animation: pulse 6s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(20px); }
+}
+
+/* ------------------------
+   Navbar Mobile Slide Animation
+------------------------- */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ------------------------
+   Links Hover Gradient
+------------------------- */
+a:hover {
+  color: var(--accent-color);
+  transition: color 0.3s ease;
+}
+
+/* ------------------------
+   3D Canvas & Loader
+------------------------- */
+.loader-circle {
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

@@ -1,16 +1,15 @@
 // src/components/Hero.jsx
 import React, { Suspense, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Stage, Html, useProgress } from "@react-three/drei";
+import { OrbitControls, useGLTF, Stage, Html } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
 
 // Loader Component
 function Loader() {
-  const { progress } = useProgress();
   return (
     <Html center className="text-white text-lg font-mono animate-pulse">
-      {progress.toFixed(0)}% loaded
+      Loading...
     </Html>
   );
 }
@@ -22,10 +21,8 @@ function ComputerModel({ scale }) {
     <primitive
       object={scene}
       scale={scale}
-      position={[0, -0.3, 0]} // ✅ adjusted so model is not too low
+      position={[0, -0.3, 0]}
       rotation={[0, Math.PI / 4, 0]}
-      castShadow
-      receiveShadow
     />
   );
 }
@@ -67,14 +64,18 @@ function RotatingTitle() {
 
 // Hero Section
 export default function Hero() {
-  const isMobile = window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex flex-col md:flex-row items-center justify-center
-      bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden 
-      px-6 md:px-20 pt-20 md:pt-0"
+        bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden
+        px-6 md:px-20 pt-20 md:pt-0"
     >
       {/* Left Side - Text */}
       <motion.div
@@ -84,8 +85,8 @@ export default function Hero() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <motion.h1
-          className="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide 
-          bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
+          className="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide
+            bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
@@ -163,29 +164,37 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Right Side - 3D Model */}
+      {/* Right Side - 3D Model / Fallback */}
       <motion.div
         className="md:w-1/2 w-full h-[320px] md:h-[600px] mt-6 md:mt-0"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
-        <Canvas shadows camera={{ position: [0, 2, 6], fov: 50 }}>
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[5, 10, 7]} intensity={1} castShadow />
-          <Suspense fallback={<Loader />}>
-            <Stage environment="city" intensity={0.6}>
-              <ComputerModel scale={isMobile ? 2.0 : 1.6} />
-            </Stage>
-          </Suspense>
-          <OrbitControls
-            enableZoom={false}
-            autoRotate
-            autoRotateSpeed={1.2}
-            maxPolarAngle={Math.PI / 2.2}
-            minPolarAngle={Math.PI / 4.2}
+        {isMobile ? (
+          <img
+            src="/models/pc-fallback.png"
+            alt="Computer Model"
+            className="w-full h-full object-contain"
           />
-        </Canvas>
+        ) : (
+          <Canvas shadows dpr={1} camera={{ position: [0, 2, 6], fov: 50 }}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 10, 7]} intensity={0.8} />
+            <Suspense fallback={<Loader />}>
+              <Stage environment="city" intensity={0.6}>
+                <ComputerModel scale={1.6} />
+              </Stage>
+            </Suspense>
+            <OrbitControls
+              enableZoom={false}
+              autoRotate
+              autoRotateSpeed={1}
+              maxPolarAngle={Math.PI / 2.2}
+              minPolarAngle={Math.PI / 4.2}
+            />
+          </Canvas>
+        )}
       </motion.div>
     </section>
   );
