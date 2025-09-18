@@ -184,7 +184,7 @@ export default function Hero() {
           <img
             src="/models/pc.png"
             alt="Computer Model"
-            className="w-3/4 h-auto mx-auto object-contain md:w-full md:h-full"
+            className=" h-auto mx-auto object-contain md:w-full md:h-full"
           />
         ) : (
           // Desktop 3D model

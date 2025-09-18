@@ -38,8 +38,7 @@ export default function Navbar() {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "Portfolio", path: "/portfolio" },
+    {name: "Project", path:"/project"},
     { name: "Contact", path: "/contact" },
   ];
 
@@ -60,7 +59,7 @@ export default function Navbar() {
                 <img
                   src={Image}
                   alt="Portfolio Logo"
-                  className="w-25 h-14 object-contain transition-transform duration-300 group-hover:scale-110"
+                  className="w-19 h-14 object-contain transition-transform duration-300 group-hover:scale-110"
                   onError={(e) => {
                     e.target.style.display = "none";
                     e.target.nextSibling.style.display = "flex";
@@ -71,7 +70,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="relative">
-                <span className="text-lg font-bold text-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text tracking-wide drop-shadow-sm">
+                <span className="text-[18px] font-bold text-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text tracking-wide drop-shadow-sm">
                 TechNest
                 </span>
                 <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 group-hover:w-full transition-all duration-700 ease-out"></div>

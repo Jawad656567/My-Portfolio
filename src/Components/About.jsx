@@ -238,6 +238,23 @@ const SkillsCategory = ({ category, skills, index }) => (
 
 // Main About Component
 export default function About() {
+  // Mobile fallback logic
+  const [mounted, setMounted] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = (e) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else mq.addListener(onChange); // older Safari
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      else mq.removeListener(onChange);
+    };
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white overflow-hidden">
       {/* Animated Background Elements */}
@@ -339,7 +356,7 @@ export default function About() {
             </motion.div>
           </motion.div>
 
-          {/* Enhanced 3D Model Section */}
+          {/* Enhanced 3D Model Section WITH MOBILE FALLBACK */}
           <motion.div
             className="lg:w-1/2 w-full h-[300px] md:h-[400px] relative"
             initial={{ opacity: 0, x: 100 }}
@@ -347,27 +364,44 @@ export default function About() {
             transition={{ duration: 1, delay: 0.3 }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
-            <div className="relative h-full rounded-3xl overflow-hidden border border-white/10 backdrop-blur-sm">
-              <Canvas shadows camera={{ position: [0, 2, 8], fov: 45 }}>
-                <ambientLight intensity={0.4} />
-                <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
-                <pointLight position={[-10, -10, -10]} intensity={0.3} color="#4f46e5" />
-                <Suspense fallback={<Loader />}>
-                  <Stage environment="warehouse" intensity={0.5}>
-                    <AboutModel />
-                  </Stage>
-                </Suspense>
-                <OrbitControls
-                  enableZoom={false}
-                  enablePan={false}
-                  autoRotate
-                  autoRotateSpeed={2.5}
-                  maxPolarAngle={Math.PI}
-                  minPolarAngle={0}
-                  maxDistance={12}
-                  minDistance={4}
-                />
-              </Canvas>
+            <div
+              className="relative h-full rounded-3xl overflow-hidden border border-white/10 backdrop-blur-sm"
+              suppressHydrationWarning
+            >
+              {mounted && !isMobile ? (
+                <Canvas shadows camera={{ position: [0, 2, 8], fov: 45 }}>
+                  <ambientLight intensity={0.4} />
+                  <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
+                  <pointLight position={[-10, -10, -10]} intensity={0.3} color="#4f46e5" />
+                  <Suspense fallback={<Loader />}>
+                    <Stage environment="warehouse" intensity={0.5}>
+                      <AboutModel />
+                    </Stage>
+                  </Suspense>
+                  <OrbitControls
+                    enableZoom={false}
+                    enablePan={false}
+                    autoRotate
+                    autoRotateSpeed={2.5}
+                    maxPolarAngle={Math.PI}
+                    minPolarAngle={0}
+                    maxDistance={12}
+                    minDistance={4}
+                  />
+                </Canvas>
+              ) : (
+                // Mobile fallback image (replace 'Image' with your own fallback if you want)
+          <motion.img
+  src="./models/about.png"
+  alt="About section static preview"
+  className="object-cover w-5/6 h-auto mx-auto mt-8"
+  initial={{ opacity: 0.6, scale: 0.98 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.6 }}
+/>
+
+
+              )}
             </div>
           </motion.div>
         </div>
