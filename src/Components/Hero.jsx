@@ -123,7 +123,7 @@ export default function Hero({ isDark }) {
         >
           {/* Main Title */}
           <motion.h1
-            className={`text-5xl md:text-7xl font-black mb-4 tracking-tight leading-tight ${
+            className={`text-4xl md:text-7xl font-black mb-4 tracking-tight leading-tight ${
               isDark ? "text-white" : "text-slate-900"
             }`}
             initial={{ opacity: 0, y: 30 }}
@@ -152,7 +152,7 @@ export default function Hero({ isDark }) {
 
           {/* Description */}
           <motion.p
-            className={`text-lg md:text-xl max-w-2xl mb-8 leading-relaxed ${
+            className={`text-[15px] md:text-xl max-w-2xl mb-8 leading-relaxed ${
               isDark ? "text-gray-300" : "text-gray-700"
             }`}
             initial={{ opacity: 0, y: 20 }}
