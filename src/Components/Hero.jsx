@@ -123,7 +123,7 @@ export default function Hero({ isDark }) {
         >
           {/* Main Title */}
 <motion.h1
-  className={`text-4xl md:text-7xl font-black mb-4 tracking-tight leading-tight 
+  className={`text-5xl md:text-7xl font-black mb-4 tracking-tight leading-tight 
     ${isDark ? "text-white" : "text-slate-900"} 
     mt-8 sm:mt-0  /* 👈 mobile pe neeche push, PC pe normal */
   `}

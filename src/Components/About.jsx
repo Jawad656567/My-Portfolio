@@ -12,21 +12,34 @@ import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
 import Image from "../images/image.jpg";
 
-// Loader Component with enhanced styling
-function Loader() {
+// Loader Component with enhanced styling + theme support
+function Loader({ isDark }) {
   const { progress } = useProgress();
   return (
     <Html center>
       <div className="flex flex-col items-center space-y-4">
         <div className="relative w-24 h-24">
-          <div className="absolute inset-0 rounded-full border-4 border-gray-800"></div>
           <div
-            className="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"
+            className={`absolute inset-0 rounded-full border-4 ${
+              isDark ? "border-white/20" : "border-gray-800/20"
+            }`}
+          ></div>
+          <div
+            className={`absolute inset-0 rounded-full border-4 ${
+              isDark ? "border-indigo-300" : "border-indigo-500"
+            } border-t-transparent animate-spin`}
             style={{ transform: `rotate(${progress * 3.6}deg)` }}
           ></div>
         </div>
-        <div className="text-white text-xl font-mono tracking-wider">
-          {progress.toFixed(0)}% <span className="text-indigo-400">loaded</span>
+        <div
+          className={`text-xl font-mono tracking-wider ${
+            isDark ? "text-slate-100" : "text-slate-800"
+          }`}
+        >
+          {progress.toFixed(0)}%{" "}
+          <span className={isDark ? "text-indigo-300" : "text-indigo-600"}>
+            loaded
+          </span>
         </div>
       </div>
     </Html>
@@ -72,14 +85,18 @@ const experiences = [
   },
 ];
 
-/* NEW: ExperienceSection component (mobile-friendly animations) */
-function ExperienceSection({ isMobile }) {
+/* NEW: ExperienceSection component (now theme-aware) */
+function ExperienceSection({ isMobile, isDark }) {
   const baseDuration = isMobile ? 0.5 : 0.8;
 
   return (
     <section
       id="experience"
-      className="relative py-20 md:py-24 bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden"
+      className={`relative py-20 md:py-24 bg-gradient-to-br ${
+        isDark
+          ? "from-slate-950 via-slate-900 to-black text-white"
+          : "from-white via-slate-50 to-slate-100 text-slate-900"
+      } overflow-hidden`}
     >
       <motion.h2
         className="text-3xl md:text-5xl font-extrabold text-center mb-16 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
@@ -104,7 +121,10 @@ function ExperienceSection({ isMobile }) {
               }`}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: baseDuration, delay: index * (isMobile ? 0.1 : 0.2) }}
+              transition={{
+                duration: baseDuration,
+                delay: index * (isMobile ? 0.1 : 0.2),
+              }}
               viewport={{ once: true, amount: 0.2 }}
             >
               {/* Dot with icon (only on large screens) */}
@@ -120,15 +140,35 @@ function ExperienceSection({ isMobile }) {
 
               {/* Content Card */}
               <motion.div
-                className="bg-slate-900 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700 hover:border-purple-400 transition relative z-10"
+                className={`p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md transition relative z-10 border ${
+                  isDark
+                    ? "bg-slate-900 border-slate-700 hover:border-purple-400"
+                    : "bg-white/80 border-slate-200 hover:border-purple-400"
+                }`}
                 whileHover={{ scale: isMobile ? 1.02 : 1.05 }}
                 transition={{ duration: 0.25 }}
               >
-                <h3 className="text-xl sm:text-2xl font-bold text-purple-300">{exp.role}</h3>
-                <p className="text-gray-400 text-sm sm:text-base">
+                <h3
+                  className={`text-xl sm:text-2xl font-bold ${
+                    isDark ? "text-purple-300" : "text-purple-700"
+                  }`}
+                >
+                  {exp.role}
+                </h3>
+                <p
+                  className={`text-sm sm:text-base ${
+                    isDark ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
                   {exp.company} | {exp.period}
                 </p>
-                <p className="mt-3 text-gray-300 text-sm sm:text-base">{exp.desc}</p>
+                <p
+                  className={`mt-3 text-sm sm:text-base ${
+                    isDark ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  {exp.desc}
+                </p>
               </motion.div>
             </motion.div>
           ))}
@@ -137,12 +177,16 @@ function ExperienceSection({ isMobile }) {
 
       {/* Background floating elements (disabled on mobile) */}
       <motion.div
-        className="hidden md:block absolute top-10 left-6 sm:left-10 w-20 sm:w-32 h-20 sm:h-32 bg-purple-600/20 rounded-full blur-3xl"
+        className={`hidden md:block absolute top-10 left-6 sm:left-10 w-20 sm:w-32 h-20 sm:h-32 rounded-full blur-3xl ${
+          isDark ? "bg-purple-600/20" : "bg-purple-500/15"
+        }`}
         animate={{ y: [0, 30, 0] }}
         transition={{ duration: 6, repeat: Infinity }}
       />
       <motion.div
-        className="hidden md:block absolute bottom-16 right-6 sm:right-20 w-28 sm:w-40 h-28 sm:h-40 bg-pink-600/20 rounded-full blur-3xl"
+        className={`hidden md:block absolute bottom-16 right-6 sm:right-20 w-28 sm:w-40 h-28 sm:h-40 rounded-full blur-3xl ${
+          isDark ? "bg-pink-600/20" : "bg-pink-500/15"
+        }`}
         animate={{ y: [0, -40, 0] }}
         transition={{ duration: 7, repeat: Infinity }}
       />
@@ -175,52 +219,84 @@ const skillsData = [
   },
 ];
 
-// Individual Skill Bar Component with mobile-friendly tweak
-const SkillBar = ({ skill, index, isMobile }) => (
+// Individual Skill Bar Component with mobile-friendly tweak + theme support
+const SkillBar = ({ skill, index, isMobile, isDark }) => (
   <motion.div
     initial={{ opacity: 0, x: -40 }}
     whileInView={{ opacity: 1, x: 0 }}
-    transition={{ duration: isMobile ? 0.4 : 0.8, delay: index * (isMobile ? 0.1 : 0.15) }}
+    transition={{
+      duration: isMobile ? 0.4 : 0.8,
+      delay: index * (isMobile ? 0.1 : 0.15),
+    }}
     className="group"
   >
     <div className="flex justify-between items-center mb-3">
-      <span className="text-gray-300 font-semibold text-lg group-hover:text-white transition-colors duration-300">
+      <span
+        className={`font-semibold text-lg transition-colors duration-300 ${
+          isDark ? "text-gray-300 group-hover:text-white" : "text-gray-700 group-hover:text-slate-900"
+        }`}
+      >
         {skill.name}
       </span>
       <div className="flex items-center space-x-2">
-        <span className="text-sm text-gray-400 group-hover:text-indigo-400 transition-colors duration-300">
+        <span
+          className={`text-sm transition-colors duration-300 ${
+            isDark ? "text-gray-400 group-hover:text-indigo-400" : "text-gray-500 group-hover:text-indigo-600"
+          }`}
+        >
           {skill.level}%
         </span>
         <div className="w-2 h-2 rounded-full bg-indigo-500 md:animate-pulse"></div>
       </div>
     </div>
-    <div className="relative h-4 bg-gray-800/50 rounded-full overflow-hidden border border-gray-700/50">
+    <div
+      className={`relative h-4 rounded-full overflow-hidden border ${
+        isDark ? "bg-gray-800/50 border-gray-700/50" : "bg-gray-200/60 border-gray-300/60"
+      }`}
+    >
       <motion.div
         initial={{ width: 0 }}
         whileInView={{ width: `${skill.level}%` }}
-        transition={{ duration: isMobile ? 1 : 2, delay: index * (isMobile ? 0.1 : 0.2), ease: "easeOut" }}
+        transition={{
+          duration: isMobile ? 1 : 2,
+          delay: index * (isMobile ? 0.1 : 0.2),
+          ease: "easeOut",
+        }}
         className={`h-full bg-gradient-to-r ${skill.color} rounded-full relative overflow-hidden`}
       >
         {/* shimmer disabled on mobile */}
         <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-shimmer"></div>
         <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </motion.div>
-      <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-1 h-1 bg-white/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <div
+        className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+          isDark ? "bg-white/60" : "bg-slate-600/60"
+        }`}
+      ></div>
     </div>
   </motion.div>
 );
 
-// Skills Category Component with mobile-friendly tweak
-const SkillsCategory = ({ category, skills, index, isMobile }) => (
+// Skills Category Component with mobile-friendly tweak + theme support
+const SkillsCategory = ({ category, skills, index, isMobile, isDark }) => (
   <motion.div
     initial={{ opacity: 0, y: 60 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: isMobile ? 0.5 : 1, delay: index * (isMobile ? 0.15 : 0.3) }}
+    transition={{
+      duration: isMobile ? 0.5 : 1,
+      delay: index * (isMobile ? 0.15 : 0.3),
+    }}
     className="relative group"
   >
     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:blur-xl transition-all duration-700 opacity-0 group-hover:opacity-100 hidden md:block"></div>
     <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-3xl"></div>
-    <div className="relative bg-slate-800/80 md:backdrop-blur-xl border border-slate-600/30 rounded-3xl p-8 hover:border-indigo-500/60 transition-all duration-700 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20">
+    <div
+      className={`relative rounded-3xl p-8 transition-all duration-700 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20 border ${
+        isDark
+          ? "bg-slate-800/80 md:backdrop-blur-xl border-slate-600/30 hover:border-indigo-500/60"
+          : "bg-white/70 backdrop-blur-md border-slate-200 hover:border-indigo-500/40"
+      }`}
+    >
       <div className="absolute top-0 left-8 transform -translate-y-1/2">
         <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-teal-500 text-white px-6 py-3 rounded-2xl text-lg font-bold shadow-2xl border border-white/20">
           <span className="relative z-10">{category}</span>
@@ -229,7 +305,13 @@ const SkillsCategory = ({ category, skills, index, isMobile }) => (
       </div>
       <div className="mt-6 space-y-6">
         {skills.map((skill, skillIndex) => (
-          <SkillBar key={skill.name} skill={skill} index={skillIndex} isMobile={isMobile} />
+          <SkillBar
+            key={skill.name}
+            skill={skill}
+            index={skillIndex}
+            isMobile={isMobile}
+            isDark={isDark}
+          />
         ))}
       </div>
       {/* spinner hidden on mobile */}
@@ -240,8 +322,8 @@ const SkillsCategory = ({ category, skills, index, isMobile }) => (
   </motion.div>
 );
 
-// Main About Component
-export default function About() {
+// Main About Component (now accepts isDark)
+export default function About({ isDark = true }) {
   // Mobile fallback logic
   const [mounted, setMounted] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
@@ -269,12 +351,30 @@ export default function About() {
     : { duration: 6, repeat: Infinity, ease: "easeInOut" };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white overflow-hidden">
+    <div
+      className={`relative min-h-screen bg-gradient-to-br ${
+        isDark
+          ? "from-slate-950 via-slate-900 to-indigo-950 text-white"
+          : "from-indigo-50 via-white to-purple-50 text-slate-900"
+      } overflow-hidden`}
+    >
       {/* Animated Background Elements (disabled on mobile) */}
       <div className="absolute inset-0 hidden md:block">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-teal-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div
+          className={`absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl animate-pulse ${
+            isDark ? "bg-indigo-500/10" : "bg-indigo-400/20"
+          }`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl animate-pulse delay-1000 ${
+            isDark ? "bg-purple-500/10" : "bg-purple-400/20"
+          }`}
+        ></div>
+        <div
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full blur-3xl animate-pulse delay-500 ${
+            isDark ? "bg-teal-500/5" : "bg-teal-400/15"
+          }`}
+        ></div>
       </div>
 
       {/* About Section */}
@@ -290,7 +390,9 @@ export default function About() {
           <motion.img
             src={Image}
             alt="Jawad Ali"
-            className="relative w-44 h-44 md:w-52 md:h-52 rounded-full border-4 border-white/20 shadow-2xl object-cover ring-8 ring-indigo-400/20 hover:ring-indigo-400/40 transition-all duration-500"
+            className={`relative w-44 h-44 md:w-52 md:h-52 rounded-full border-4 ${
+              isDark ? "border-white/20" : "border-black/10"
+            } shadow-2xl object-cover ring-8 ring-indigo-400/20 hover:ring-indigo-400/40 transition-all duration-500`}
             animate={profileAnimate}
             transition={profileTransition}
             whileHover={{ scale: 1.05, rotate: 0 }}
@@ -318,7 +420,9 @@ export default function About() {
                 About
               </span>
               <br />
-              <span className="text-white">Me</span>
+              <span className={isDark ? "text-white" : "text-slate-900"}>
+                Me
+              </span>
             </motion.h2>
 
             <motion.div
@@ -327,7 +431,7 @@ export default function About() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: isMobile ? 0.6 : 1, delay: 0.4 }}
             >
-              <p className="text-gray-300">
+              <p className={isDark ? "text-gray-300" : "text-gray-700"}>
                 Hi! I'm{" "}
                 <span className="font-bold text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text">
                   Jawad Ali
@@ -339,9 +443,9 @@ export default function About() {
                 specializing in modern web applications.
               </p>
 
-              <p className="text-gray-300">
-                I transform ideas into elegant digital solutions using cutting-edge technologies
-                and best practices in web development.
+              <p className={isDark ? "text-gray-300" : "text-gray-700"}>
+                I transform ideas into elegant digital solutions using
+                cutting-edge technologies and best practices in web development.
               </p>
             </motion.div>
 
@@ -356,7 +460,13 @@ export default function About() {
                 <span className="relative z-10">Download Resume</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
-              <button className="px-8 py-4 border-2 border-indigo-400 text-indigo-400 font-semibold rounded-full hover:bg-indigo-400 hover:text-white transition-all duration-300 hover:scale-105">
+              <button
+                className={`px-8 py-4 border-2 font-semibold rounded-full transition-all duration-300 hover:scale-105 ${
+                  isDark
+                    ? "border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white"
+                    : "border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white"
+                }`}
+              >
                 Contact Me
               </button>
             </motion.div>
@@ -371,16 +481,26 @@ export default function About() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl md:blur-xl hidden md:block"></div>
             <div
-              className="relative h-full rounded-3xl overflow-hidden border border-white/10 md:backdrop-blur-sm"
+              className={`relative h-full rounded-3xl overflow-hidden md:backdrop-blur-sm border ${
+                isDark ? "border-white/10" : "border-black/10"
+              }`}
               suppressHydrationWarning
             >
               {mounted && !isMobile ? (
                 // Desktop/Tablet: Show 3D Canvas
                 <Canvas shadows camera={{ position: [0, 2, 8], fov: 45 }}>
                   <ambientLight intensity={0.4} />
-                  <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
-                  <pointLight position={[-10, -10, -10]} intensity={0.3} color="#4f46e5" />
-                  <Suspense fallback={<Loader />}>
+                  <directionalLight
+                    position={[10, 10, 5]}
+                    intensity={1.2}
+                    castShadow
+                  />
+                  <pointLight
+                    position={[-10, -10, -10]}
+                    intensity={0.3}
+                    color="#4f46e5"
+                  />
+                  <Suspense fallback={<Loader isDark={isDark} />}>
                     <Stage environment="warehouse" intensity={0.5}>
                       <AboutModel />
                     </Stage>
@@ -413,7 +533,7 @@ export default function About() {
       </section>
 
       {/* NEW Experience Section (timeline) */}
-      <ExperienceSection isMobile={isMobile} />
+      <ExperienceSection isMobile={isMobile} isDark={isDark} />
 
       {/* Skills Section */}
       <section className="relative z-10 px-6 md:px-20 py-20">
@@ -435,13 +555,16 @@ export default function About() {
               </span>
             </motion.h2>
             <motion.p
-              className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+              className={`text-xl max-w-3xl mx-auto leading-relaxed ${
+                isDark ? "text-gray-300" : "text-gray-700"
+              }`}
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: isMobile ? 0.6 : 1, delay: 0.4 }}
             >
-              A comprehensive overview of my technical expertise and proficiency levels
-              across various technologies and tools in the modern web development ecosystem.
+              A comprehensive overview of my technical expertise and proficiency
+              levels across various technologies and tools in the modern web
+              development ecosystem.
             </motion.p>
           </motion.div>
 
@@ -453,6 +576,7 @@ export default function About() {
                 skills={category.skills}
                 index={index}
                 isMobile={isMobile}
+                isDark={isDark}
               />
             ))}
           </div>
