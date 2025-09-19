@@ -122,28 +122,30 @@ export default function Hero({ isDark }) {
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
           {/* Main Title */}
-          <motion.h1
-            className={`text-4xl md:text-7xl font-black mb-4 tracking-tight leading-tight ${
-              isDark ? "text-white" : "text-slate-900"
-            }`}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
-          >
-            Hi, I'm
-            <br />
-            <span className="relative inline-block">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-fuchsia-500 to-pink-600">
-                Jawad Ali
-              </span>
-              <motion.div
-                className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-pink-500 to-fuchsia-500"
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ delay: 1.5, duration: 0.8 }}
-              />
-            </span>
-          </motion.h1>
+<motion.h1
+  className={`text-4xl md:text-7xl font-black mb-4 tracking-tight leading-tight 
+    ${isDark ? "text-white" : "text-slate-900"} 
+    mt-8 sm:mt-0  /* 👈 mobile pe neeche push, PC pe normal */
+  `}
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1, delay: 0.4 }}
+>
+  Hi, I'm
+  <br />
+  <span className="relative inline-block">
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-fuchsia-500 to-pink-600">
+      Jawad Ali
+    </span>
+    <motion.div
+      className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-pink-500 to-fuchsia-500"
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      transition={{ delay: 1.5, duration: 0.8 }}
+    />
+  </span>
+</motion.h1>
+
 
           {/* Rotating Title */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
@@ -163,46 +165,55 @@ export default function Hero({ isDark }) {
             exceptional digital experiences with clean code, stunning designs, and seamless functionality.
           </motion.p>
 
-          {/* Action Buttons */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
-          >
-            <motion.a
-              href="#projects"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className={`group relative px-8 py-4 rounded-xl font-semibold text-lg shadow-xl overflow-hidden transition-all duration-300 ${
-                isDark
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/25"
-                  : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-purple-500/25"
-              }`}
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                <FaDownload />
-                Download CV
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-pink-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </motion.a>
+{/* Action Buttons */}
+<motion.div
+  className="flex flex-col sm:flex-row gap-3 mb-6 items-center sm:items-start"
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 1.2 }}
+>
+  <motion.a
+    href="#projects"
+    whileHover={{ scale: 1.05, y: -2 }}
+    whileTap={{ scale: 0.95 }}
+    className={`group relative 
+      w-fit px-4 py-2 text-sm rounded-md   /* 👈 mobile */
+      sm:w-auto sm:px-8 sm:py-4 sm:text-lg sm:rounded-xl /* 👈 PC */
+      font-medium shadow-md overflow-hidden transition-all duration-300
+      ${
+        isDark
+          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/25"
+          : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-purple-500/25"
+      }`}
+  >
+    <span className="relative z-10 flex items-center gap-2">
+      <FaDownload className="text-sm sm:text-base" />
+      Download CV
+    </span>
+    <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-pink-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+  </motion.a>
 
-            <motion.a
-              href="#contact"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className={`group px-8 py-4 rounded-xl font-semibold text-lg border-2 transition-all duration-300 ${
-                isDark
-                  ? "border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
-                  : "border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <FaEnvelope />
-                Let's Talk
-              </span>
-            </motion.a>
-          </motion.div>
+  <motion.a
+    href="#contact"
+    whileHover={{ scale: 1.05, y: -2 }}
+    whileTap={{ scale: 0.95 }}
+    className={`group 
+      w-fit px-4 py-2 text-sm rounded-md   /* 👈 mobile */
+      sm:w-auto sm:px-8 sm:py-4 sm:text-lg sm:rounded-xl /* 👈 PC */
+      font-medium border transition-all duration-300
+      ${
+        isDark
+          ? "border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
+          : "border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
+      }`}
+  >
+    <span className="flex items-center gap-2">
+      <FaEnvelope className="text-sm sm:text-base" />
+      Let's Talk
+    </span>
+  </motion.a>
+</motion.div>
+
 
           {/* Social Links */}
           <motion.div
