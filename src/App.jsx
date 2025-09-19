@@ -4,7 +4,7 @@ import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import About from "./Components/About";
 import Project from "./Components/Project";
-import Contact from "./Components/Contact";
+import Contact from "./Components/contact";
 
 function App() {
   const [isDark, setIsDark] = useState(true);
