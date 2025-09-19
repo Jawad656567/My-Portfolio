@@ -351,8 +351,8 @@ export default function Hero({ isDark }) {
       </div>
 
       {/* Scroll Indicator - Simplified for mobile */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+      <motion.div 
+        className="absolute bottom-7 left-1/2 transform -translate-x-1/2"
         initial={{ opacity: 0, y: isMobile ? -10 : -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: isMobile ? 1 : 2, duration: isMobile ? 0.5 : 0.8 }}
