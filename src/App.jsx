@@ -7,7 +7,7 @@ import Project from "./Components/Project";
 import Contact from "./Components/Contact";
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   return (
     <Router>
