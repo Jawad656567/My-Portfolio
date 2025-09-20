@@ -121,7 +121,7 @@ export default function Hero({ isDark }) {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          {/* Main Title */}
+         {/* main title */}
 <motion.h1
   className={`text-5xl md:text-7xl font-black mb-4 tracking-tight leading-tight 
     ${isDark ? "text-white" : "text-slate-900"} 
