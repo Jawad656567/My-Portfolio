@@ -194,7 +194,7 @@ export default function Hero({ isDark }) {
   </motion.a>
 
   <motion.a
-    href="#contact"
+    href="/contact"
     whileHover={{ scale: 1.05, y: -2 }}
     whileTap={{ scale: 0.95 }}
     className={`group 
@@ -213,46 +213,6 @@ export default function Hero({ isDark }) {
     </span>
   </motion.a>
 </motion.div>
-
-
-          {/* Social Links */}
-          <motion.div
-            className="flex justify-center md:justify-start gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5 }}
-          >
-            {[
-              { icon: FaGithub, href: "https://github.com/Jawad656567", color: "hover:text-gray-600" },
-              {
-                icon: FaFacebook,
-                href: "https://www.facebook.com/jawad.ali.543086?mibextid=ZbWKwL",
-                color: "hover:text-blue-500",
-              },
-              {
-                icon: FaLinkedin,
-                href: "https://www.linkedin.com/in/jawad-ali-201640379",
-                color: "hover:text-blue-600",
-              },
-            ].map((social, index) => (
-              <motion.a
-                key={index}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, y: -3 }}
-                whileTap={{ scale: 0.9 }}
-                className={`text-3xl transition-all duration-300 ${
-                  isDark ? "text-gray-400" : "text-gray-600"
-                } ${social.color} hover:drop-shadow-lg`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.7 + index * 0.1 }}
-              >
-                <social.icon />
-              </motion.a>
-            ))}
-          </motion.div>
         </motion.div>
 
         {/* Right Side - 3D Model Image */}

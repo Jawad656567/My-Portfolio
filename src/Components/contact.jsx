@@ -542,13 +542,13 @@ export default function Contact({ isDark = true }) {
               </span>
               <div className="flex items-center gap-3">
                 <SocialLink
-                  href="https://github.com/your-username"
+                  href="https://github.com/Jawad656567"
                   icon={Github}
                   isDark={isDark}
                   delay={0.1}
                 />
                 <SocialLink
-                  href="https://www.linkedin.com/in/your-username"
+                  href="https://www.linkedin.com/in/jawad-ali-201640379"
                   icon={Linkedin}
                   isDark={isDark}
                   delay={0.2}

@@ -5,11 +5,42 @@ import { Search, Eye, X, Star, Code, Globe } from "lucide-react";
 // Sample projects data
 const projectsData = [
   {
+    id: 5,
+    title: "All Countries List",
+    category: "AI/ML",
+    description:
+      "A React-based web app that displays a list of countries with details such as name, capital, population, and region, featuring a clean UI and responsive design.",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop",
+    tags: ["React", "Parcel", "Jsx", "Css"],
+    live: "https://countries-list-psi.vercel.app/",
+    repo: "https://github.com/Jawad656567/Countries-List",
+    featured: true,
+    stars: 312,
+    status: "Beta",
+  },
+  {
+    id: 4,
+    title: "Invoice Generator App",
+    category: "Web App",
+    description:
+      "A web app to quickly create and download professional invoices with customizable fields, responsive design, and PDF export support.",
+    image:
+      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=450&fit=crop",
+    tags: ["React.js", "MongoDb", "Tailwind", "Vercel", "Render"],
+    live: "https://invoice-generator-git-main-jawad-als-projects.vercel.app/",
+    repo: "https://github.com/Jawad656567/Invoice-Generator",
+    featured: false,
+    stars: 67,
+    status: "Active",
+  },
+  
+  {
     id: 1,
     title: "Calculator",
     category: "Web App",
     description:
-      "A modern developer platform with workspace management, real-time collaboration, and advanced authentication system.",
+      "A responsive calculator built with HTML, CSS, and JavaScript that performs basic arithmetic operations with a clean UI.",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
     tags: ["JS", "Html", "CSS", "Vercel"],
@@ -20,6 +51,22 @@ const projectsData = [
     status: "Active",
   },
   {
+    id: 3,
+    title: "Food Panda",
+    category: "Web App",
+    description:
+      "A FoodPanda-inspired web app with a modern UI for browsing food items, adding to cart, and placing orders, built using HTML, CSS, JS, and Tailwind.",
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=450&fit=crop",
+    tags: ["Html", "Css", "JS", "Vercel", "Tailwind"],
+    live: "https://food-panda-ecomerce.vercel.app/",
+    repo: "https://github.com/Jawad656567/Food-Panda-Ecomerce",
+    featured: true,
+    stars: 234,
+    status: "Active",
+  },
+  
+  {
     id: 2,
     title: "Portfolio Website",
     category: "Landing",
@@ -28,68 +75,24 @@ const projectsData = [
     image:
       "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=450&fit=crop",
     tags: ["React", "Tailwind", "Framer Motion", "Three.js"],
-    live: "https://example.com/portfolio",
-    repo: "https://github.com/username/portfolio",
+    live: "https://my-portfolio-three-jet-64.vercel.app/",
+    repo: "https://github.com/Jawad656567/My-Portfolio",
     featured: false,
     stars: 89,
     status: "Completed",
   },
-  {
-    id: 3,
-    title: "E-commerce Store",
-    category: "Web App",
-    description:
-      "Full-stack e-commerce solution with advanced cart management, payment integration, and admin dashboard.",
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=450&fit=crop",
-    tags: ["Next.js", "Stripe", "PostgreSQL", "Redux", "Tailwind"],
-    live: "https://example.com/store",
-    repo: "https://github.com/username/store",
-    featured: true,
-    stars: 234,
-    status: "Active",
-  },
-  {
-    id: 4,
-    title: "Task Management App",
-    category: "Web App",
-    description:
-      "Collaborative task management application with real-time updates and team coordination features.",
-    image:
-      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=450&fit=crop",
-    tags: ["Vue.js", "Firebase", "Vuetify", "PWA"],
-    live: "https://example.com/tasks",
-    repo: "https://github.com/username/tasks",
-    featured: false,
-    stars: 67,
-    status: "Active",
-  },
-  {
-    id: 5,
-    title: "AI Chat Interface",
-    category: "AI/ML",
-    description:
-      "Modern chat interface for AI interactions with conversation history and customizable themes.",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop",
-    tags: ["React", "OpenAI", "WebSocket", "TypeScript"],
-    live: "https://example.com/chat",
-    repo: "https://github.com/username/ai-chat",
-    featured: true,
-    stars: 312,
-    status: "Beta",
-  },
+  
   {
     id: 6,
-    title: "Weather Dashboard",
+    title: "Todo Tasks",
     category: "Dashboard",
     description:
-      "Beautiful weather dashboard with detailed forecasts, interactive maps, and location-based alerts.",
+      "A simple and responsive todo list app built with HTML, CSS, and JavaScript that allows users to add, complete, and delete tasks.",
     image:
       "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=800&h=450&fit=crop",
-    tags: ["React", "D3.js", "Weather API", "Chart.js"],
-    live: "https://example.com/weather",
-    repo: "https://github.com/username/weather",
+    tags: ["Html", "Css", "Js API", "Vercel"],
+    live: "https://todo-project-js-pearl.vercel.app/",
+    repo: "https://github.com/Jawad656567/Todo-Project-JS",
     featured: false,
     stars: 45,
     status: "Completed",

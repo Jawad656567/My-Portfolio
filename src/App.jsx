@@ -5,6 +5,7 @@ import Hero from "./Components/Hero";
 import About from "./Components/About";
 import Project from "./Components/Project";
 import Contact from "./Components/contact";
+import Footer from "./Components/Footer";
 
 function App() {
   const [isDark, setIsDark] = useState(true);
@@ -21,6 +22,7 @@ function App() {
             <Route path="/contact" element={<Contact isDark={isDark} />} />
           </Routes>
         </div>
+        <Footer isDark={isDark} setIsDark={setIsDark} />
       </div>
     </Router>
   );
