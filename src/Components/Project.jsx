@@ -6,15 +6,15 @@ import { Search, Eye, X, Star, Code, Globe } from "lucide-react";
 const projectsData = [
   {
     id: 1,
-    title: "TechNest Platform",
+    title: "Calculator",
     category: "Web App",
     description:
       "A modern developer platform with workspace management, real-time collaboration, and advanced authentication system.",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
-    tags: ["React", "Node.js", "MongoDB", "Socket.io", "JWT"],
-    live: "https://example.com/technest",
-    repo: "https://github.com/username/technest",
+    tags: ["JS", "Html", "CSS", "Vercel"],
+    live: "https://calculator-blue-beta.vercel.app/",
+    repo: "https://github.com/Jawad656567/Calculator",
     featured: true,
     stars: 156,
     status: "Active",
