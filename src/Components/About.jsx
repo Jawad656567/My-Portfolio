@@ -450,26 +450,39 @@ export default function About({ isDark = true }) {
             </motion.div>
 
             {/* CTA Buttons */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: isMobile ? 0.6 : 1, delay: 0.6 }}
-            >
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <span className="relative z-10">Download Resume</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
-              <button
-                className={`px-8 py-4 border-2 font-semibold rounded-full transition-all duration-300 hover:scale-105 ${
-                  isDark
-                    ? "border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white"
-                    : "border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white"
-                }`}
-              >
-                Contact Me
-              </button>
-            </motion.div>
+          <motion.div
+  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-10"
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: isMobile ? 0.6 : 1, delay: 0.6 }}
+>
+  {/* Download Resume */}
+  <motion.a
+    href="/cv.pdf"   // PDF path (public/cv/...)
+    download="cv.pdf"   // suggested filename
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+  >
+    <span className="relative z-10">Download CV</span>
+    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  </motion.a>
+
+  {/* Contact Me */}
+  <motion.a
+    href="/contact"   // Contact page route
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className={`px-8 py-4 border-2 font-semibold rounded-full transition-all duration-300 hover:scale-105 ${
+      isDark
+        ? "border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white"
+        : "border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white"
+    }`}
+  >
+    Contact Me
+  </motion.a>
+</motion.div>
+
           </motion.div>
 
           {/* Enhanced 3D Model Section WITH MOBILE FALLBACK */}
