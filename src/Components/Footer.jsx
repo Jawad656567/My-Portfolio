@@ -12,7 +12,6 @@ import {
   Moon,
   ExternalLink
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import Image from "../images/logooo.png";
 
 const FOOTER_LINKS = {
@@ -92,7 +91,7 @@ export default function Footer({ isDark, setIsDark }) {
           
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-3 mb-6 group">
+            <div className="flex items-center gap-3 mb-6 group cursor-pointer">
               <div className="relative">
                 <img 
                   src={Image} 
@@ -117,7 +116,7 @@ export default function Footer({ isDark, setIsDark }) {
                   DIGITAL SOLUTIONS
                 </span>
               </div>
-            </Link>
+            </div>
             
             <p className={`text-sm leading-relaxed mb-8 ${
               isDark ? "text-gray-400" : "text-gray-500"
@@ -137,7 +136,7 @@ export default function Footer({ isDark, setIsDark }) {
                 </div>
                 <div className="flex flex-col">
                   <a 
-                    href="ja289327@gmail.com" 
+                    href="mailto:ja289327@gmail.com" 
                     className={`text-sm font-medium hover:text-yellow-500 transition-all duration-300 hover:translate-x-1`}
                   >
                    Email
@@ -204,16 +203,13 @@ export default function Footer({ isDark, setIsDark }) {
             <ul className="space-y-3">
               {FOOTER_LINKS.company.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    to={link.path}
-                    className={`group flex items-center gap-2 text-sm hover:text-yellow-500 transition-all duration-300 hover:translate-x-2 font-medium relative py-1`}
-                  >
+                  <span className={`group flex items-center gap-2 text-sm hover:text-yellow-500 transition-all duration-300 hover:translate-x-2 font-medium relative py-1 cursor-pointer`}>
                     <span className="relative">
                       {link.name}
                       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-500 transition-all duration-300 group-hover:w-full rounded-full" />
                     </span>
                     <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1" />
-                  </Link>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -234,16 +230,13 @@ export default function Footer({ isDark, setIsDark }) {
             <ul className="space-y-3">
               {FOOTER_LINKS.services.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    to={link.path}
-                    className={`group flex items-center gap-2 text-sm hover:text-yellow-500 transition-all duration-300 hover:translate-x-2 font-medium relative py-1`}
-                  >
+                  <span className={`group flex items-center gap-2 text-sm hover:text-yellow-500 transition-all duration-300 hover:translate-x-2 font-medium relative py-1 cursor-pointer`}>
                     <span className="relative">
                       {link.name}
                       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-500 transition-all duration-300 group-hover:w-full rounded-full" />
                     </span>
                     <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1" />
-                  </Link>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -268,6 +261,8 @@ export default function Footer({ isDark, setIsDark }) {
                     <a
                       key={social.label}
                       href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       aria-label={social.label}
                       className={`group relative p-3 rounded-xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 overflow-hidden ${
                         isDark 
@@ -384,23 +379,17 @@ export default function Footer({ isDark, setIsDark }) {
                 © 2025 TechNest. All rights reserved.
               </p>
               <div className="flex items-center gap-4 text-sm">
-                <Link 
-                  to="/privacy" 
-                  className={`hover:text-yellow-500 transition-colors duration-300 ${
-                    isDark ? "text-gray-500" : "text-gray-400"
-                  }`}
-                >
+                <span className={`hover:text-yellow-500 transition-colors duration-300 cursor-pointer ${
+                  isDark ? "text-gray-500" : "text-gray-400"
+                }`}>
                   Privacy Policy
-                </Link>
+                </span>
                 <span className={isDark ? "text-gray-600" : "text-gray-300"}>•</span>
-                <Link 
-                  to="/terms" 
-                  className={`hover:text-yellow-500 transition-colors duration-300 ${
-                    isDark ? "text-gray-500" : "text-gray-400"
-                  }`}
-                >
+                <span className={`hover:text-yellow-500 transition-colors duration-300 cursor-pointer ${
+                  isDark ? "text-gray-500" : "text-gray-400"
+                }`}>
                   Terms of Service
-                </Link>
+                </span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm">
