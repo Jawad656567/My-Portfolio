@@ -35,8 +35,45 @@ const SOCIAL_LINKS = [
   { icon: Github, href: "https://github.com/Jawad656567", label: "GitHub", color: "hover:text-gray-800 dark:hover:text-white", bgColor: "group-hover:bg-gray-800/10" }
 ];
 
+// Hook: Detect mobile (<= 768px)
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
+  );
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
+// Hook: Respect OS prefers-reduced-motion
+function usePrefersReducedMotion() {
+  const [prefers, setPrefers] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setPrefers(media.matches);
+    setPrefers(media.matches);
+    try {
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    } catch {
+      media.addListener && media.addListener(onChange);
+      return () => media.removeListener && media.removeListener(onChange);
+    }
+  }, []);
+  return prefers;
+}
+
 export default function Footer({ isDark, setIsDark }) {
   const [showScrollTop, setShowScrollTop] = useState(true);
+  const isMobile = useIsMobile();
+  const prefersReduced = usePrefersReducedMotion();
+  const lowMotion = isMobile || prefersReduced;
 
   const toggleTheme = () => setIsDark((d) => !d);
 
@@ -273,10 +310,12 @@ export default function Footer({ isDark, setIsDark }) {
                       <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl ${social.bgColor}`} />
                       <Icon size={20} className="relative z-10 transition-all duration-500 group-hover:scale-110" />
                       
-                      {/* Pulse effect */}
-                      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500">
-                        <div className="absolute inset-0 rounded-xl bg-current animate-ping" />
-                      </div>
+                      {/* Pulse effect (disabled on mobile/lowMotion) */}
+                      {!lowMotion && (
+                        <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+                          <div className="absolute inset-0 rounded-xl bg-current animate-ping" />
+                        </div>
+                      )}
                     </a>
                   );
                 })}
@@ -325,7 +364,7 @@ export default function Footer({ isDark, setIsDark }) {
                   {/* Animated Background */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
                   
-                  {/* Moving Shine Effect */}
+                  {/* Moving Shine Effect (hover only; harmless on mobile) */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out">
                     <div className="h-full w-8 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12" />
                   </div>
@@ -347,17 +386,21 @@ export default function Footer({ isDark, setIsDark }) {
                     </span>
                   </div>
                   
-                  {/* Ripple Effect */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-white rounded-full group-hover:w-96 group-hover:h-96 transition-all duration-700" />
-                  </div>
+                  {/* Ripple Effect (disable on mobile/lowMotion) */}
+                  {!lowMotion && (
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-white rounded-full group-hover:w-96 group-hover:h-96 transition-all duration-700" />
+                    </div>
+                  )}
                   
-                  {/* Floating Particles */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute top-2 left-3 w-1 h-1 bg-white/50 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-                    <div className="absolute top-3 right-4 w-0.5 h-0.5 bg-white/40 rounded-full animate-ping" style={{ animationDelay: '0.8s' }} />
-                    <div className="absolute bottom-3 left-1/2 w-0.5 h-0.5 bg-white/30 rounded-full animate-ping" style={{ animationDelay: '1.1s' }} />
-                  </div>
+                  {/* Floating Particles (disable on mobile/lowMotion) */}
+                  {!lowMotion && (
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute top-2 left-3 w-1 h-1 bg-white/50 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
+                      <div className="absolute top-3 right-4 w-0.5 h-0.5 bg-white/40 rounded-full animate-ping" style={{ animationDelay: '0.8s' }} />
+                      <div className="absolute bottom-3 left-1/2 w-0.5 h-0.5 bg-white/30 rounded-full animate-ping" style={{ animationDelay: '1.1s' }} />
+                    </div>
+                  )}
                   
                   {/* Border Glow */}
                   <div className="absolute -inset-0.5 bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-400 rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 -z-10 blur-sm" />
@@ -398,7 +441,7 @@ export default function Footer({ isDark, setIsDark }) {
               </span>
               <Heart 
                 size={16} 
-                className="text-red-500 fill-current animate-pulse" 
+                className={`text-red-500 fill-current ${!lowMotion ? "animate-pulse" : ""}`} 
               />
               <span className={isDark ? "text-gray-400" : "text-gray-500"}>
                 in Pakistan
@@ -410,17 +453,17 @@ export default function Footer({ isDark, setIsDark }) {
 
       {/* Advanced Background Effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Gradient Orbs */}
+        {/* Gradient Orbs (no pulse on mobile/lowMotion) */}
         <div className={`absolute -top-24 -right-24 w-48 h-48 rounded-full opacity-10 blur-3xl ${
           isDark 
             ? "bg-gradient-to-br from-yellow-500 to-amber-600" 
             : "bg-gradient-to-br from-yellow-400 to-amber-500"
-        } animate-pulse`} />
+        } ${!lowMotion ? "animate-pulse" : ""}`} />
         <div className={`absolute -bottom-24 -left-24 w-48 h-48 rounded-full opacity-10 blur-3xl ${
           isDark 
             ? "bg-gradient-to-br from-amber-600 to-orange-500" 
             : "bg-gradient-to-br from-amber-500 to-orange-400"
-        } animate-pulse`} style={{ animationDelay: '2s' }} />
+        } ${!lowMotion ? "animate-pulse" : ""}`} style={{ animationDelay: '2s' }} />
       </div>
     </footer>
   );
