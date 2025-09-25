@@ -63,7 +63,7 @@ function AboutModel() {
 
 const experiences = [
  {
-  role: "Frontend Developer",
+  role: "Frontend Developer",   
   company: "Tech Creator",
   period: "2025 - Present",
   desc: "Specialized in building responsive and interactive web applications using React, TailwindCSS, JavaScript, and modern frontend tools.",
