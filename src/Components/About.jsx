@@ -62,27 +62,27 @@ function AboutModel() {
 }
 
 const experiences = [
-  {
-    role: "Frontend Developer",
-    company: "Tech Creator",
-    period: "2025 - Present",
-    desc: "Built responsive web applications with React, TailwindCSS, and optimized user experiences.",
-    color: "from-purple-500 to-pink-500",
-  },
-  {
-    role: "MERN Stack Developer",
-    company: "Freelance",
-    period: "2024 - 2025",
-    desc: "Developed full-stack projects with MongoDB, Express, React, and Node.js ensuring scalability and performance.",
-    color: "from-blue-500 to-cyan-400",
-  },
-  {
-    role: "Intern Web Developer",
-    company: "Tech Creator",
-    period: "2024 - 2025",
-    desc: "Worked on small projects, learned team collaboration, and contributed to real-world applications.",
-    color: "from-green-500 to-emerald-400",
-  },
+ {
+  role: "Frontend Developer",
+  company: "Tech Creator",
+  period: "2025 - Present",
+  desc: "Specialized in building responsive and interactive web applications using React, TailwindCSS, JavaScript, and modern frontend tools.",
+  color: "from-purple-500 to-pink-500",
+},
+{
+  role: "Frontend Developer",
+  company: "Freelance",
+  period: "2024 - 2025",
+  desc: "Created dynamic user interfaces, optimized performance, and delivered pixel-perfect designs with React, Next.js, and TailwindCSS.",
+  color: "from-blue-500 to-cyan-400",
+},
+{
+  role: "Frontend Developer Intern",
+  company: "Tech Creator",
+  period: "2024 - 2025",
+  desc: "Assisted in frontend tasks, gained hands-on experience with UI/UX implementation, and collaborated with teams on real projects.",
+  color: "from-green-500 to-emerald-400",
+},
 ];
 
 /* NEW: ExperienceSection component (now theme-aware) */
@@ -398,7 +398,7 @@ export default function About({ isDark = true }) {
             whileHover={{ scale: 1.05, rotate: 0 }}
           />
           <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-xl">
-            MERN Stack Developer
+            Front-End Developer
           </div>
         </motion.div>
 
@@ -438,7 +438,7 @@ export default function About({ isDark = true }) {
                 </span>
                 , a passionate{" "}
                 <span className="text-indigo-400 font-semibold">
-                  MERN Stack Developer
+                    Front-End Developer
                 </span>{" "}
                 specializing in modern web applications.
               </p>
