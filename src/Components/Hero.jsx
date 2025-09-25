@@ -58,9 +58,7 @@ function RotatingTitle({ isDark, isMobile, lowMotion }) {
   const titles = [
     "Frontend Developer",
     "Web Developer",
-    "MERN Stack Developer",
     "React Enthusiast",
-    "UI/UX Designer",
   ];
   const [index, setIndex] = useState(0);
 
@@ -195,7 +193,7 @@ export default function Hero({ isDark }) {
             animate={{ opacity: 1 }}
             transition={{ delay: lowMotion ? 0.25 : 1, duration: lowMotion ? 0.3 : 0.8 }}
           >
-            Passionate <span className="font-semibold text-purple-500">MERN Stack Developer</span> crafting
+            Passionate <span className="font-semibold text-purple-500">Front-End Developer</span> crafting
             exceptional digital experiences with clean code, stunning designs, and seamless functionality.
           </motion.p>
 
