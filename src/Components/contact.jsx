@@ -547,7 +547,7 @@ export default function Contact({ isDark = true }) {
                   isDark={isDark}
                   delay={0.1}
                 />
-                <SocialLink
+                <SocialLink  
                   href="https://www.linkedin.com/in/jawad-ali-201640379"
                   icon={Linkedin}
                   isDark={isDark}
