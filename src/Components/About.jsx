@@ -60,30 +60,224 @@ function AboutModel() {
     />
   );
 }
-
 const experiences = [
- {
-  role: "Frontend Developer",   
-  company: "Tech Creator",
-  period: "2025 - Present",
-  desc: "Specialized in building responsive and interactive web applications using React, TailwindCSS, JavaScript, and modern frontend tools.",
-  color: "from-purple-500 to-pink-500",
-},
-{
-  role: "Frontend Developer",
-  company: "Freelance",
-  period: "2024 - 2025",
-  desc: "Created dynamic user interfaces, optimized performance, and delivered pixel-perfect designs with React, Next.js, and TailwindCSS.",
-  color: "from-blue-500 to-cyan-400",
-},
-{
-  role: "Frontend Developer Intern",
-  company: "Tech Creator",
-  period: "2024 - 2025",
-  desc: "Assisted in frontend tasks, gained hands-on experience with UI/UX implementation, and collaborated with teams on real projects.",
-  color: "from-green-500 to-emerald-400",
-},
+  {
+    role: "Web Developer",
+    company: "Tech Creator",
+    period: "2025 - Present",
+    desc: "Building fast, responsive web apps with React and TailwindCSS focused on clean UI and great UX",
+    color: "from-purple-500 to-pink-500",
+  },
+  {
+    role: "React Developer",
+    company: "Freelance",
+    period: "2024 - 2025",
+    desc: "Developed dynamic user interfaces and optimized performance using React, Next.js, and TailwindCSS.",
+    color: "from-blue-500 to-cyan-400",
+  },
+  {
+    role: "Frontend Intern",
+    company: "Tech Creator",
+    period: "2024 - 2025",
+    desc: "Contributed to UI development and collaborated with teams on live frontend projects.",
+    color: "from-green-500 to-emerald-400",
+  },
 ];
+
+
+
+
+const educationData = [
+  {
+    degree: "Bachelor in Computer Science (BSCS)",
+    institution: "Government Lahore Degree College",
+    location: "Swabi, Pakistan",
+    period: "Mar 2023 - Present",
+    field: "Computer Science",
+    color: "from-blue-500 to-cyan-500",
+  },
+  {
+    degree: "FSc Pre-Engineering",
+    institution: "Government Higher Secondary College",
+    location: "Swabi, Pakistan",
+    period: "2021 - 2023",
+    field: "Pre-Engineering",
+    color: "from-green-500 to-emerald-500",
+  },
+];
+
+const languageSkills = [
+  { language: "Pashto", level: "Native", color: "from-purple-400 to-pink-400" },
+  { language: "Urdu", level: "Fluent", color: "from-blue-400 to-cyan-400" },
+  { language: "English", level: "Basic", color: "from-green-400 to-teal-400" },
+];
+
+const achievements = [
+  "Participated in college-level coding competitions",
+  "Active GitHub contributor with regular commits",
+];
+
+/* NEW: Education Section */
+function EducationSection({ isMobile, isDark }) {
+  const baseDuration = isMobile ? 0.5 : 0.8;
+
+  return (
+    <section
+      className={`relative py-20 md:py-24 bg-gradient-to-br ${
+        isDark
+          ? "from-slate-900 via-slate-950 to-black text-white"
+          : "from-slate-50 via-white to-slate-100 text-slate-900"
+      } overflow-hidden`}
+    >
+      <motion.h2
+        className="text-3xl md:text-5xl font-extrabold text-center mb-16 bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: isMobile ? 0.5 : 1 }}
+        viewport={{ once: true }}
+      >
+        Education 🎓
+      </motion.h2>
+
+      <div className="max-w-4xl mx-auto px-6 sm:px-8 space-y-8">
+        {educationData.map((edu, index) => (
+          <motion.div
+            key={index}
+            className={`p-6 sm:p-8 rounded-2xl shadow-2xl transition relative border ${
+              isDark
+                ? "bg-slate-800/90 border-slate-700 hover:border-blue-400"
+                : "bg-white/80 border-slate-200 hover:border-blue-400"
+            }`}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: baseDuration,
+              delay: index * 0.2,
+            }}
+            whileHover={{ scale: isMobile ? 1.02 : 1.03 }}
+            viewport={{ once: true }}
+          >
+            <div className={`inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4 bg-gradient-to-r ${edu.color} text-white`}>
+              {edu.field}
+            </div>
+            <h3
+              className={`text-xl sm:text-2xl font-bold mb-2 ${
+                isDark ? "text-blue-300" : "text-blue-700"
+              }`}
+            >
+              {edu.degree}
+            </h3>
+            <p
+              className={`text-sm sm:text-base ${
+                isDark ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              {edu.institution}
+            </p>
+            <p
+              className={`text-sm ${
+                isDark ? "text-gray-500" : "text-gray-500"
+              }`}
+            >
+              {edu.location} | {edu.period}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* NEW: Languages & Achievements Section */
+function LanguagesAchievementsSection({ isMobile, isDark }) {
+  return (
+    <section
+      className={`relative py-20 md:py-24 bg-gradient-to-br ${
+        isDark
+          ? "from-black via-slate-950 to-slate-900 text-white"
+          : "from-white via-slate-50 to-slate-100 text-slate-900"
+      } overflow-hidden`}
+    >
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Languages */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: isMobile ? 0.6 : 0.9 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+              Languages 🌐
+            </h2>
+            <div className="space-y-6">
+              {languageSkills.map((lang, index) => (
+                <motion.div
+                  key={index}
+                  className={`p-6 rounded-xl border transition ${
+                    isDark
+                      ? "bg-slate-800/80 border-slate-700 hover:border-purple-400"
+                      : "bg-white/70 border-slate-200 hover:border-purple-400"
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.15, duration: 0.5 }}
+                  whileHover={{ scale: 1.03 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className={`text-lg font-semibold ${isDark ? "text-gray-200" : "text-gray-800"}`}>
+                      {lang.language}
+                    </span>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r ${lang.color} text-white`}>
+                      {lang.level}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Achievements */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: isMobile ? 0.6 : 0.9 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 bg-gradient-to-r from-green-400 to-teal-500 bg-clip-text text-transparent">
+              Achievements 🏆
+            </h2>
+            <div className="space-y-4">
+              {achievements.map((achievement, index) => (
+                <motion.div
+                  key={index}
+                  className={`p-6 rounded-xl border transition ${
+                    isDark
+                      ? "bg-slate-800/80 border-slate-700 hover:border-green-400"
+                      : "bg-white/70 border-slate-200 hover:border-green-400"
+                  }`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.15, duration: 0.5 }}
+                  whileHover={{ scale: 1.03 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-teal-500 mt-2 flex-shrink-0"></div>
+                    <p className={`text-base ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                      {achievement}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 /* NEW: ExperienceSection component (now theme-aware) */
 function ExperienceSection({ isMobile, isDark }) {
@@ -160,7 +354,7 @@ function ExperienceSection({ isMobile, isDark }) {
                     isDark ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  {exp.company} | {exp.period}
+                  {exp.company} {exp.location && `| ${exp.location}`} | {exp.period}
                 </p>
                 <p
                   className={`mt-3 text-sm sm:text-base ${
@@ -458,8 +652,8 @@ export default function About({ isDark = true }) {
 >
   {/* Download Resume */}
   <motion.a
-    href="/cv.pdf"   // PDF path (public/cv/...)
-    download="cv.pdf"   // suggested filename
+    href="/cv.pdf"
+    download="cv.pdf"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
     className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
@@ -470,7 +664,7 @@ export default function About({ isDark = true }) {
 
   {/* Contact Me */}
   <motion.a
-    href="/contact"   // Contact page route
+    href="/contact"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
     className={`px-8 py-4 border-2 font-semibold rounded-full transition-all duration-300 hover:scale-105 ${
@@ -530,7 +724,7 @@ export default function About({ isDark = true }) {
                   />
                 </Canvas>
               ) : (
-                // Mobile: Show fallback image (ensure this path is in /public)
+                // Mobile: Show fallback image
                 <motion.img
                   src="./models/about.png"
                   alt="About section static preview"
@@ -547,6 +741,12 @@ export default function About({ isDark = true }) {
 
       {/* NEW Experience Section (timeline) */}
       <ExperienceSection isMobile={isMobile} isDark={isDark} />
+
+      {/* NEW Education Section */}
+      <EducationSection isMobile={isMobile} isDark={isDark} />
+
+      {/* NEW Languages & Achievements */}
+      <LanguagesAchievementsSection isMobile={isMobile} isDark={isDark} />
 
       {/* Skills Section */}
       <section className="relative z-10 px-6 md:px-20 py-20">
